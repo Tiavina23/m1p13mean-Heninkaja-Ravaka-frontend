@@ -1,0 +1,13 @@
+<h2>Ajouter un categorie</h2>
+<form (ngSubmit)="addCategorie()">
+  <input type="text" [(ngModel)]="newCategorie.title" name="title" required>
+  <button type="submit">Ajouter</button>
+</form>
+
+<hr>
+
+<h2>Liste des categories</h2>
+<div *ngFor="let categorie of categories">
+  <p>{{ categorie.content }}</p>
+  <button (click)="deleteCategorie(categorie._id)">Supprimer</button>
+</div>
