@@ -1,0 +1,28 @@
+<h2>Ajouter un produit</h2>
+
+<form (ngSubmit)="addProduit()">
+  <input type="text" [(ngModel)]="newProduit.name" name="name" placeholder="Nom" required>
+  <textarea [(ngModel)]="newProduit.description" name="description" placeholder="Description"></textarea>
+  <input type="number" [(ngModel)]="newProduit.prix" name="prix" placeholder="Prix" required>
+  <input type="number" [(ngModel)]="newProduit.stock" name="stock" placeholder="Stock">
+  <input type="text" [(ngModel)]="newProduit.image" name="image" placeholder="Image URL">
+  <input type="text" [(ngModel)]="newProduit.categorie" name="categorie" placeholder="Categorie ID">
+  <input type="text" [(ngModel)]="newProduit.shop" name="shop" placeholder="Shop ID">
+
+  <button type="submit">Ajouter</button>
+</form>
+
+<hr>
+
+<h2>Liste des produits</h2>
+
+<div *ngFor="let produit of produits" style="border:1px solid #ccc; padding:10px; margin-bottom:10px;">
+  <h3>{{ produit.name }}</h3>
+  <p>{{ produit.description }}</p>
+  <p>Prix: {{ produit.prix }}</p>
+  <p>Stock: {{ produit.stock }}</p>
+  <p>Catégorie: {{ produit.categorie?.nom || produit.categorie }}</p>
+  <p>Shop: {{ produit.shop?.nom || produit.shop }}</p>
+
+  <button (click)="deleteProduit(produit._id)" style="background-color:red; color:white;">Supprimer</button>
+</div>
