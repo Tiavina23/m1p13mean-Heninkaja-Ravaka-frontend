@@ -12,28 +12,25 @@ export class AuthService {
   constructor(private http: HttpClient) {}
 
   login(data: any) {
-    return this.http.post(this.API_URL + 'login', data)
-      .pipe(
-        tap((res: any) => {
-          localStorage.setItem('token', res.accessToken);
-          localStorage.setItem('role', res.role);
-        })
-      );
+    return this.http.post(`${this.API_URL}/login`, data);
   }
 
   register(data: any) {
-    return this.http.post(this.API_URL + 'register', data);
+    return this.http.post(`${this.API_URL}/register`, data);
+  }
+  getUser() {
+    return JSON.parse(localStorage.getItem('user')!);
+  }
+  saveUser(data: any) {
+    localStorage.setItem('user', JSON.stringify(data));
   }
 
   logout() {
     localStorage.clear();
   }
 
-  getRole() {
-    return localStorage.getItem('role');
+  getToken() {
+    return this.getUser()?.accessToken;
   }
 
-  isLoggedIn() {
-    return !!localStorage.getItem('token');
-  }
 }
