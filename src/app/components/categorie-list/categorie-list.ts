@@ -1,20 +1,20 @@
 
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';   // 👈 très important
+import { FormsModule } from '@angular/forms';   
 import { CategorieService } from '../../services/categorie';
 
 @Component({
   selector: 'app-categorie-list',
   standalone: true,
-  imports: [CommonModule, FormsModule],       // 👈 FormsModule doit être là
+  imports: [CommonModule, FormsModule],
   templateUrl: './categorie-list.html',
   styleUrls: ['./categorie-list.css'] 
 })
 export class CategorieList implements OnInit {
 
   categories: any[] = [];
-  newArticle = { title: '', content: '' };
+  newCategorie = { title: '', content: '' };
 
   constructor(private categorieService: CategorieService) {}
 
@@ -29,8 +29,8 @@ export class CategorieList implements OnInit {
   }
 
   addCategorie(): void {
-    this.categorieService.addCategorie(this.newArticle).subscribe(() => {
-      this.newArticle = { title: '', content: '' }; 
+    this.categorieService.addCategorie(this.newCategorie).subscribe(() => {
+      this.newCategorie = { title: '', content: '' }; 
       this.loadCategories();
     });
   }

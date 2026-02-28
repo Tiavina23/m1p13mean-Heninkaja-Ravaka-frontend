@@ -1,0 +1,27 @@
+<h2>Gestion des promotions</h2>
+
+<div class="form-group">
+  <label>Nom de la promotion</label>
+  <input type="text" [(ngModel)]="promo.nom" name="nom">
+</div>
+
+<div class="form-group">
+  <label>Taux de réduction (%)</label>
+  <input type="number" [(ngModel)]="promo.tauxReduction" name="tauxReduction" min="1" max="100">
+</div>
+
+<div class="form-group">
+  <label>Calendrier</label>
+  <input id="promoCalendar" type="text" placeholder="Sélectionner la date ou période">
+</div>
+
+<div class="form-group">
+  <label>Produits à mettre en promotion</label>
+  <div *ngFor="let p of produits">
+    <input type="checkbox" [(ngModel)]="p.selected"> {{p.name}} - {{p.description}}
+  </div>
+</div>
+
+<div class="form-group">
+  <button (click)="save()">Créer la promotion</button>
+</div>

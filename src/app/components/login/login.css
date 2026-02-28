@@ -1,0 +1,70 @@
+.login-container {
+    max-width: 400px;
+    margin: 100px auto;
+    padding: 25px;
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    font-family: Arial;
+  }
+  
+  h2 {
+    text-align: center;
+  }
+  
+  .roles {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+  }
+  
+  .roles button {
+    flex: 1;
+    padding: 10px;
+    background: #1976d2;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  .roles button:hover {
+    background: #125aa0;
+  }
+  
+  label {
+    font-weight: bold;
+  }
+  
+  button,input {
+    width: 100%;
+    margin-bottom: 15px;
+    padding: 8px;
+    box-sizing: border-box;
+  }
+  
+  button {
+    background-color: #3498db;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer; /* change le curseur */
+    transition: all 0.2s ease;
+  }
+  
+  
+  button:hover {
+    background-color: #2980b9;
+    cursor: pointer;
+  }
+  
+  .active-btn {
+    background-color: #2ecc71 !important;
+    transform: scale(0.95);
+    cursor: progress; /* curseur qui tourne */
+  }
+  
+  .error {
+    color: red;
+    text-align: center;
+  }

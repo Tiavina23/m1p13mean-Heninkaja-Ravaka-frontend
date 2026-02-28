@@ -1,28 +1,80 @@
-<h2>Ajouter un produit</h2>
+<div class="container">
 
-<form (ngSubmit)="addProduit()">
-  <input type="text" [(ngModel)]="newProduit.name" name="name" placeholder="Nom" required>
-  <textarea [(ngModel)]="newProduit.description" name="description" placeholder="Description"></textarea>
-  <input type="number" [(ngModel)]="newProduit.prix" name="prix" placeholder="Prix" required>
-  <input type="number" [(ngModel)]="newProduit.stock" name="stock" placeholder="Stock">
-  <input type="text" [(ngModel)]="newProduit.image" name="image" placeholder="Image URL">
-  <input type="text" [(ngModel)]="newProduit.categorie" name="categorie" placeholder="Categorie ID">
-  <input type="text" [(ngModel)]="newProduit.shop" name="shop" placeholder="Shop ID">
+  <div class="form-section">
+    <h2>Gestion de produits </h2>
 
-  <button type="submit">Ajouter</button>
-</form>
+    <form (ngSubmit)="save()">
 
-<hr>
+      <div class="form-group">
+        <label>Nom</label>
+        <input type="text" [(ngModel)]="produit.name" name="name" required>
+      </div>
 
-<h2>Liste des produits</h2>
+      <div class="form-group">
+        <label>Description</label>
+        <textarea [(ngModel)]="produit.description" name="description"></textarea>
+      </div>
 
-<div *ngFor="let produit of produits" style="border:1px solid #ccc; padding:10px; margin-bottom:10px;">
-  <h3>{{ produit.name }}</h3>
-  <p>{{ produit.description }}</p>
-  <p>Prix: {{ produit.prix }}</p>
-  <p>Stock: {{ produit.stock }}</p>
-  <p>Catégorie: {{ produit.categorie?.nom || produit.categorie }}</p>
-  <p>Shop: {{ produit.shop?.nom || produit.shop }}</p>
+      <div class="form-group">
+        <label>Prix (Ar)</label>
+        <input type="number" [(ngModel)]="produit.prix" name="prix" required>
+      </div>
 
-  <button (click)="deleteProduit(produit._id)" style="background-color:red; color:white;">Supprimer</button>
+      <div class="form-group">
+        <label>Stock</label>
+        <input type="number" [(ngModel)]="produit.stock" name="stock">
+      </div>
+
+      <div class="form-group">
+        <label>Catégorie</label>
+        <select [(ngModel)]="produit.categorie" name="categorie" required>
+          <option *ngFor="let c of categories" [ngValue]="c._id">
+            {{c.name}}
+          </option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label>Image</label>
+        <input type="file" (change)="onFileSelected($event)">
+      </div>
+
+      <button type="submit">
+        {{isEdit ? 'Modifier' : 'Ajouter'}}
+      </button>
+
+    </form>
+  </div>
+
+
+  <div class="table-section">
+    <h2>Liste des produits</h2>
+
+    <table>
+      <tr>
+        <th>Nom</th>
+        <th>Prix</th>
+        <th>Stock</th>
+        <th>Image</th>
+        <th>Actions</th>
+      </tr>
+
+      <tr *ngFor="let p of produits">
+        <td>{{p.name}}</td>
+        <td>{{p.prix}} Ar</td>
+        <td>{{p.stock}}</td>
+        <td>
+          <img 
+            *ngIf="p.image"
+            [src]="'http://localhost:5000/uploads/' + p.image"
+            class="product-image">
+        </td>
+        <td>
+          <button (click)="edit(p)">Edit</button>
+          <button (click)="delete(p._id)">Delete</button>
+        </td>
+      </tr>
+    </table>
+  </div>
+
 </div>

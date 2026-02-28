@@ -1,9 +1,8 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ProduitService } from '../../services/produit';
-
-import { Observable } from 'rxjs';
+import { CategorieService } from '../../services/categorie';
 
 @Component({
   selector: 'app-produit',
@@ -12,55 +11,80 @@ import { Observable } from 'rxjs';
   templateUrl: './produit.html',
   styleUrls: ['./produit.css']
 })
-export class ProduitComponent {
+export class ProduitComponent implements OnInit {
 
-  // Liste des produits
   produits: any[] = [];
+  categories: any[] = [];
 
-  // Nouveau produit
-  newProduit: any = {
+  produit: any = {
     name: '',
     description: '',
     prix: 0,
     stock: 0,
-    image: '',
     categorie: '',
-    shop: ''
+    image: null
   };
 
-  constructor(private produitService: ProduitService) {}
+  isEdit = false;
+
+  constructor(
+    private produitService: ProduitService,
+    private categorieService: CategorieService
+  ) {}
 
   ngOnInit() {
     this.loadProduits();
+    this.loadCategories();
   }
 
-  // Charger tous les produits
   loadProduits() {
     this.produitService.getProduits()
-      .subscribe(data => this.produits = data);
-  }
-
-  // Ajouter un produit
-  addProduit() {
-    this.produitService.addProduit(this.newProduit)
-      .subscribe(() => {
-        this.loadProduits();
-        // Réinitialiser le formulaire
-        this.newProduit = {
-          name: '',
-          description: '',
-          prix: 0,
-          stock: 0,
-          image: '',
-          categorie: '',
-          shop: ''
-        };
+      .subscribe(produits => {
+        console.log('Produits reçus du backend:', produits); 
+        this.produits = produits; // mettre à jour la liste
       });
   }
 
-  // Supprimer un produit
-  deleteProduit(id: string) {
-    this.produitService.deleteProduit(id)
-      .subscribe(() => this.loadProduits());
+  loadCategories() {
+    this.categorieService.getCategories()
+      .subscribe(data => this.categories = data);
+  }
+
+  onFileSelected(event: any) {
+    this.produit.image = event.target.files[0];
+  }
+
+  save() {
+    if (this.isEdit) {
+      this.produitService.updateProduit(this.produit._id, this.produit)
+        .subscribe(() => { this.resetForm(); this.loadProduits(); });
+    } else {
+      this.produitService.addProduit(this.produit)
+        .subscribe(() => { this.resetForm(); this.loadProduits(); });
+    }
+  }
+
+  edit(p: any) {
+    this.produit = { ...p };
+    this.isEdit = true;
+  }
+
+  delete(id: string) {
+    if (confirm('Supprimer ce produit ?')) {
+      this.produitService.deleteProduit(id)
+        .subscribe(() => this.loadProduits());
+    }
+  }
+
+  resetForm() {
+    this.produit = {
+      name: '',
+      description: '',
+      prix: 0,
+      stock: 0,
+      categorie: '',
+      image: null
+    };
+    this.isEdit = false;
   }
 }

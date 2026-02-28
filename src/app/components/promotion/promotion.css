@@ -1,0 +1,26 @@
+.form-group {
+  margin-bottom: 15px;
+}
+
+input[type="text"], input[type="number"] {
+  width: 200px;
+  padding: 5px;
+}
+
+#promoCalendar {
+  width: 250px;
+  padding: 5px;
+}
+
+button {
+  padding: 7px 15px;
+  background-color: #1976d2;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #115293;
+}

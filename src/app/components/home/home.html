@@ -1,0 +1,17 @@
+<h2>Bienvenue, vous etes connecter en tant que:  {{role}}</h2>
+
+<div *ngIf="role==='shop'">
+  <button routerLink="/gestionproduit">Gestion de produit</button>
+  <button routerLink="/ajoutpromo">Ajout promotion</button>
+</div>
+
+<div *ngIf="role==='admin'">
+  <p>Gestion catégories (à venir)</p>
+</div>
+
+<div *ngIf="role==='acheteur'">
+  <p>Voir produits (à venir)</p>
+</div>
+
+<hr>
+<button (click)="logout()">Déconnexion</button>
