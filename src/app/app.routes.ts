@@ -1,11 +1,11 @@
 import { RouterModule, Routes } from '@angular/router';
 
 import { LoginComponent } from './modules/auth/login/login';
-import { Register } from './modules/auth/register/register';
+import { RegisterComponent } from './modules/auth/register/register';
 
 
 // Admin
-import { AdminDashboard } from './modules/admin/admin-dashboard/admin-dashboard';
+import { AdminDashboardComponent } from './modules/admin/admin-dashboard/admin-dashboard';
 import { ShopValidation } from './modules/admin/shop-validation/shop-validation';
 
 // Shop
@@ -20,12 +20,12 @@ import { authGuard } from './guards/auth-guard';
 export const routes: Routes = [
         // Auth routes
         { path: 'login', component: LoginComponent },
-        { path: 'register', component: Register },
-
+        { path: 'register', component: RegisterComponent },
+        { path: '', redirectTo: 'login', pathMatch: 'full' },
         // Admin routes
         {
             path: 'admin',
-            component: AdminDashboard,
+            component: AdminDashboardComponent,
             canActivate: [authGuard],
             data: { role: 'admin' }
         },

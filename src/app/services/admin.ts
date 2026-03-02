@@ -17,4 +17,8 @@ export class AdminService {
   validateShop(id: string) {
     return this.http.put(`${this.API}/validate-shop/${id}`, {});
   }
+
+  getAllShops() {
+  return this.http.get(`${this.API}/all-shops`);
+  }
 }

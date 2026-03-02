@@ -8,8 +8,8 @@ import { AuthService } from '../../../services/auth';
   selector: 'app-register-shop',
   standalone: true,
   imports: [CommonModule, ReactiveFormsModule, RouterModule],
-  templateUrl: './register-shop.component.html',
-  styleUrls: ['./register-shop.component.css']
+  templateUrl: './register-shop.html',
+  styleUrls: ['./register-shop.css']
 })
 export class RegisterShopComponent {
   registerForm: FormGroup;   // <-- on déclare juste la variable
@@ -18,11 +18,11 @@ export class RegisterShopComponent {
   successMessage = '';
 
   constructor(
-    private fb: FormBuilder,      // <-- injection ici
+    private fb: FormBuilder,     
     private authService: AuthService,
     private router: Router
   ) {
-    // Initialisation du formulaire **après injection**
+    
     this.registerForm = this.fb.group({
       username: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]],

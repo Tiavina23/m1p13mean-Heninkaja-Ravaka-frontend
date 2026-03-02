@@ -1,6 +1,27 @@
-<h2>Shops en attente</h2>
+<div class="validation-wrapper">
 
-<div *ngFor="let shop of shops">
-  <p>{{ shop.name }}</p>
-  <button (click)="validate(shop._id)">Valider</button>
+  <div class="validation-card">
+    <h2>🔔 Shops en attente</h2>
+
+    <div *ngIf="shops.length === 0">
+      Aucun shop en attente.
+    </div>
+
+    <div *ngFor="let shop of shops" class="shop-item">
+      <div>
+        <strong>{{ shop.name }}</strong><br>
+        {{ shop.email }}
+      </div>
+
+      <button (click)="validate(shop._id)">
+        Valider
+      </button>
+    </div>
+
+    <div *ngIf="message" class="success">
+      {{ message }}
+    </div>
+
+  </div>
+
 </div>
