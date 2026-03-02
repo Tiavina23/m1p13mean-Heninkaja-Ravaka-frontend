@@ -1,0 +1,7 @@
+<h2>Mes Produits</h2>
+
+<div *ngFor="let p of products">
+  <h3>{{ p.name }}</h3>
+  <p>{{ p.prix }} Ar</p>
+  <button (click)="delete(p._id)">Supprimer</button>
+</div>

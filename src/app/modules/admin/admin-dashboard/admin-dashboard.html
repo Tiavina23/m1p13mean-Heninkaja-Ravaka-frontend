@@ -1,0 +1,51 @@
+<div class="dashboard-wrapper">
+
+  <div class="dashboard-card">
+
+    <h2>📊 Admin Dashboard</h2>
+
+    <!-- 🔔 Notifications -->
+    <div class="notification-box">
+      <h3>
+        🔔 Shops en attente 
+        <span *ngIf="pendingShops.length > 0" class="badge">
+          {{ pendingShops.length }}
+        </span>
+      </h3>
+
+      <div *ngIf="pendingShops.length === 0">
+        Aucun shop en attente.
+      </div>
+
+      <div *ngFor="let shop of pendingShops" class="pending-item">
+        {{ shop.name }} - {{ shop.email }}
+      </div>
+
+      <a routerLink="/admin/validation" class="validate-link">
+        Voir & Valider
+      </a>
+    </div>
+
+    <hr>
+
+    <!-- 📋 Liste complète -->
+    <h3>🏪 Tous les Shops</h3>
+
+    <div *ngFor="let shop of allShops" class="shop-item">
+
+      <div>
+        <strong>{{ shop.name }}</strong><br>
+        {{ shop.email }}
+      </div>
+
+      <span 
+        [class.active]="shop.isActive"
+        [class.inactive]="!shop.isActive">
+        {{ shop.isActive ? 'Actif' : 'En attente' }}
+      </span>
+
+    </div>
+
+  </div>
+
+</div>

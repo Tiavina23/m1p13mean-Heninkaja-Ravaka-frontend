@@ -8,32 +8,21 @@ import { Observable } from 'rxjs';
 export class ProduitService {
 
   // URL de l'API backend
-  private apiUrl = 'http://localhost:5000/api/produits';
+  private API_URL = 'http://localhost:5000/api/produits';
 
   constructor(private http: HttpClient) {}
 
- 
-  getProduits(): Observable<any[]> {
-    return this.http.get<any[]>(this.apiUrl);
+  getMyProducts() {
+    return this.http.get(`${this.API_URL}/my-products`);
+  }
+
+  addProduct(data: any) {
+    return this.http.post(`${this.API_URL}`, data);
+  }
+
+  deleteProduct(id: string) {
+    return this.http.delete(`${this.API_URL}/${id}`);
   }
 
 
-  getProduitById(id: string): Observable<any> {
-    return this.http.get<any>(`${this.apiUrl}/${id}`);
-  }
-
-
-  addProduit(produit: any): Observable<any> {
-    return this.http.post<any>(this.apiUrl, produit);
-  }
-
- 
-  updateProduit(id: string, produit: any): Observable<any> {
-    return this.http.put<any>(`${this.apiUrl}/${id}`, produit);
-  }
-
-
-  deleteProduit(id: string): Observable<any> {
-    return this.http.delete(`${this.apiUrl}/${id}`);
-  }
 }

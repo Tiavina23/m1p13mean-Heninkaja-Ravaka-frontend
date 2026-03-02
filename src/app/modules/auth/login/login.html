@@ -1,0 +1,46 @@
+<div class="login-wrapper">
+
+  <div class="login-card">
+    <h2>Connexion</h2>
+
+    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+
+      <div class="form-group">
+        <input
+          type="email"
+          formControlName="email"
+          placeholder="Email"
+        />
+        <small *ngIf="loginForm.get('email')?.invalid && loginForm.get('email')?.touched">
+          Email invalide
+        </small>
+      </div>
+
+      <div class="form-group">
+        <input
+          type="password"
+          formControlName="password"
+          placeholder="Mot de passe"
+        />
+        <small *ngIf="loginForm.get('password')?.invalid && loginForm.get('password')?.touched">
+          Minimum 4 caractères
+        </small>
+      </div>
+
+      <button type="submit" [disabled]="isLoading || loginForm.invalid">
+        {{ isLoading ? 'Connexion...' : 'Se connecter' }}
+      </button>
+
+    </form>
+
+    <p class="error" *ngIf="errorMessage">
+      {{ errorMessage }}
+    </p>
+
+    <div class="register-link">
+      <a routerLink="/register">S'inscrire</a>
+    </div>
+
+  </div>
+
+</div>

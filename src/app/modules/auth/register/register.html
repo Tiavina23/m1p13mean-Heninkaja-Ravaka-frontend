@@ -1,0 +1,56 @@
+<div class="login-wrapper">
+  <div class="login-card">
+
+    <h2>Inscription</h2>
+
+    <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+
+      <div class="form-group">
+        <input type="text" formControlName="name" placeholder="Nom">
+        <small *ngIf="registerForm.get('name')?.invalid && registerForm.get('name')?.touched">
+          Nom obligatoire
+        </small>
+      </div>
+
+      <div class="form-group">
+        <input type="email" formControlName="email" placeholder="Email">
+        <small *ngIf="registerForm.get('email')?.invalid && registerForm.get('email')?.touched">
+          Email invalide
+        </small>
+      </div>
+
+      <div class="form-group">
+        <input type="password" formControlName="password" placeholder="Mot de passe">
+        <small *ngIf="registerForm.get('password')?.invalid && registerForm.get('password')?.touched">
+          Minimum 4 caractères
+        </small>
+      </div>
+
+      <div class="form-group">
+        <select formControlName="role">
+          <option value="acheteur">Acheteur</option>
+          <option value="shop">Shop</option>
+        </select>
+      </div>
+
+      <button type="submit" [disabled]="registerForm.invalid">
+        S'inscrire
+      </button>
+
+    </form>
+
+    <div *ngIf="errorMessage" class="error">
+      {{ errorMessage }}
+    </div>
+
+    <div *ngIf="message" style="color: green; margin-top:10px;">
+      {{ message }}
+    </div>
+
+    <div class="register-link">
+      <p>Déjà un compte ?</p>
+      <a routerLink="/login">Se connecter</a>
+    </div>
+
+  </div>
+</div>
