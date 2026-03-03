@@ -6,7 +6,7 @@ import { Injectable } from '@angular/core';
 })
 export class AdminService {
 
-  private API = 'http://localhost:3000/api/admin';
+  private API = 'http://localhost:5000/api/users';
 
   constructor(private http: HttpClient) {}
 
@@ -21,4 +21,7 @@ export class AdminService {
   getAllShops() {
   return this.http.get(`${this.API}/all-shops`);
   }
+  deleteShop(id: string) {
+  return this.http.delete(`${this.API}/delete-shop/${id}`);
+}
 }

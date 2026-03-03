@@ -10,12 +10,9 @@ import { ShopValidation } from './modules/admin/shop-validation/shop-validation'
 
 // Shop
 import { ShopDashboard } from './modules/shop/shop-dashboard/shop-dashboard';
-import { ProductList } from './modules/shop/product-list/product-list';
-import { ProductForm } from './modules/shop/product-form/product-form';
-import { NgModule } from '@angular/core';
-
 import { authGuard } from './guards/auth-guard';
-
+import { PromotionComponent } from './modules/shop/promotion/promotion';
+import { ProduitComponent } from './modules/shop/produit/produit';
 
 export const routes: Routes = [
         // Auth routes
@@ -45,13 +42,13 @@ export const routes: Routes = [
         },
         {
             path: 'shop/products',
-            component: ProductList,
+            component: ProduitComponent,
             canActivate: [authGuard],
             data: { role: 'shop' }
         },
         {
-            path: 'shop/add-product',
-            component: ProductForm,
+            path: 'shop/add-promotion',
+            component: PromotionComponent,
             canActivate: [authGuard],
             data: { role: 'shop' }
         },

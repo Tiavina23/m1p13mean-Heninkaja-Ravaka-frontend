@@ -20,14 +20,12 @@ export class LoginComponent {
     private authService: AuthService,
     private router: Router
   ) {
-    // Création du formulaire
+   
     this.loginForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required, Validators.minLength(4)]]
     });
   }
-
-
 
   onSubmit() {
 
@@ -41,32 +39,31 @@ export class LoginComponent {
     this.authService.login(this.loginForm.value).subscribe({
       next: (res: any) => {
 
-        this.authService.saveUser(res);
-
-        // Redirection selon rôle
-        switch (res.role) {
-          case 'admin':
-            this.router.navigate(['/admin']);
-            break;
-
-          case 'shop':
-            this.router.navigate(['/shop']);
-            break;
-
-          case 'acheteur':
-            this.router.navigate(['/']);
-            break;
-
-          default:
-            this.router.navigate(['/']);
+        localStorage.setItem('user', JSON.stringify(res));
+        localStorage.setItem('token', res.accessToken);
+        if (res.role === 'admin') {
+          this.router.navigate(['/admin']);
+        } else if (res.role === 'shop') {
+          this.router.navigate(['/shop']);
+        } else {
+          this.router.navigate(['/home']);
         }
 
-        this.isLoading = false;
       },
+         
 
       error: (err) => {
-        this.errorMessage = err.error?.message || 'Email ou mot de passe incorrect';
         this.isLoading = false;
+
+        if (err.status === 403) {
+          this.errorMessage = err.error.message;
+        } else if (err.status === 401) {
+          this.errorMessage = "Mot de passe incorrect";
+        } else if (err.status === 404) {
+          this.errorMessage = "Utilisateur non trouvé";
+        } else {
+          this.errorMessage = "Erreur serveur";
+        }
       }
     });
   }

@@ -1,1 +1,28 @@
-<p>shop-dashboard works!</p>
+<div class="shop-dashboard-wrapper">
+
+  <h2>Bienvenue, {{ shopName }}</h2>
+
+  <div class="shop-actions">
+    <button routerLink="/shop/products">Gestion des Produits</button>
+    <button routerLink="/shop/add-promotion">Créer une Promotion</button>
+  </div>
+
+  <h3>Liste de vos produits</h3>
+
+  <div *ngIf="produits.length === 0">
+    Aucun produit pour le moment
+  </div>
+
+  <div class="product-card" *ngFor="let p of produits">
+    <p><strong>Nom :</strong> {{ p.name }}</p>
+    <p><strong>Description :</strong> {{ p.description }}</p>
+    <p><strong>Prix :</strong> {{ p.prix }} Ar</p>
+    <p><strong>Stock :</strong> {{ p.stock }}</p>
+    <div *ngIf="p.image">
+      <img [src]="'http://localhost:5000/uploads/' + p.image" alt="{{p.name}}">
+    </div>
+  </div>
+
+</div>
+  
+

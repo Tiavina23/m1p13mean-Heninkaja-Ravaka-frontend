@@ -1,0 +1,27 @@
+<div class="promo-container">
+
+  <h2>Créer une Promotion</h2>
+
+  <label>Nom de la promotion</label>
+  <input type="text" [(ngModel)]="promo.nom">
+
+  <label>Taux de réduction (%)</label>
+  <input type="number" [(ngModel)]="promo.tauxReduction">
+
+  <label>Choisir la période</label>
+  <input id="calendar" type="text">
+
+  <h3>Produits</h3>
+
+  <button type="button" (click)="selectAll()">Tout sélectionner</button>
+
+  <div *ngFor="let p of produits">
+    <input type="checkbox"
+           [checked]="promo.produits.includes(p._id)"
+           (change)="toggleProduit(p._id)">
+    {{ p.name }} - {{p.description}}
+  </div>
+
+  <button (click)="savePromotion()">Enregistrer</button>
+
+</div>

@@ -1,12 +1,12 @@
 import { Component } from '@angular/core';
 import { FormBuilder, Validators, ReactiveFormsModule, FormGroup } from '@angular/forms';
-import { Router } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { AuthService } from '../../../services/auth';
 @Component({
   selector: 'app-register',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule],
+  imports: [CommonModule, ReactiveFormsModule , RouterModule],
   templateUrl: './register.html',
   styleUrls: ['./register.css']
 })
@@ -21,12 +21,14 @@ export class RegisterComponent {
     private authService: AuthService,
     private router: Router
   ) {
-    // 🔥 INITIALISATION DANS LE CONSTRUCTOR
+
     this.registerForm = this.fb.group({
       name: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required, Validators.minLength(4)]],
-      role: ['acheteur']
+      role: ['acheteur'],
+      shopName: [''],
+      shopDescription: ['']
     });
   }
 

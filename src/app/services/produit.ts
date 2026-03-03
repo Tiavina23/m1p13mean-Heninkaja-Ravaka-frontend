@@ -1,28 +1,66 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { AuthService } from './../services/auth';
 import { Observable } from 'rxjs';
 
-@Injectable({
+export interface Produit {
+  _id: string;
+  name: string;
+  prix: number;
+}
+
+@Injectable({ 
   providedIn: 'root'
 })
+
 export class ProduitService {
 
-  // URL de l'API backend
-  private API_URL = 'http://localhost:5000/api/produits';
+  API = 'http://localhost:5000/api/produits';
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private auth: AuthService) {}
 
-  getMyProducts() {
-    return this.http.get(`${this.API_URL}/my-products`);
+  private headers() {
+    return {
+      headers: new HttpHeaders({
+        Authorization: `Bearer ${this.auth.getToken()}`
+      })
+    };
   }
 
-  addProduct(data: any) {
-    return this.http.post(`${this.API_URL}`, data);
+  // Liste des produits du shop connecté
+  getProduits() {
+    return this.http.get<any[]>(this.API , this.headers());
   }
 
-  deleteProduct(id: string) {
-    return this.http.delete(`${this.API_URL}/${id}`);
+  getPro(): Observable<Produit[]> {
+    return this.http.get<Produit[]>(this.API , this.headers());
   }
 
+  addProduit(produit: any) {
+    const formData = new FormData();
+    formData.append('name', produit.name);
+    formData.append('description', produit.description);
+    formData.append('prix', produit.prix);
+    formData.append('stock', produit.stock);
+    formData.append('categorie', produit.categorie);
+    if (produit.image) formData.append('image', produit.image);
 
+    return this.http.post(this.API, formData, this.headers());
+  }
+
+  updateProduit(id: string, produit: any) {
+    const formData = new FormData();
+    formData.append('name', produit.name);
+    formData.append('description', produit.description);
+    formData.append('prix', produit.prix);
+    formData.append('stock', produit.stock);
+    formData.append('categorie', produit.categorie);
+    if (produit.image) formData.append('image', produit.image);
+
+    return this.http.put(`${this.API}/${id}`, formData, this.headers());
+  }
+
+  deleteProduit(id: string) {
+    return this.http.delete(`${this.API}/${id}`, this.headers());
+  }
 }
