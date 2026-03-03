@@ -1,123 +1,132 @@
-// src/app/components/promotion/promotion.ts
-import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { Component, OnInit } from '@angular/core';
 import flatpickr from 'flatpickr';
-import { ProduitService } from '../../services/produit';
 import { FeteService } from '../../services/fete';
+import { ProduitService } from '../../services/produit';
 import { PromotionService } from '../../services/promotion';
-import 'flatpickr/dist/flatpickr.css';
 
 @Component({
   selector: 'app-promotion',
-  standalone: true,
   imports: [CommonModule, FormsModule],
   templateUrl: './promotion.html',
-  styleUrls: ['./promotion.css']
+  styleUrls: ['./promotion.css'],
+  standalone: true
 })
 export class PromotionComponent implements OnInit {
 
-  produits: any[] = [];
   fetes: { nom: string; date: Date }[] = [];
-  promo: {
-    nom: string;
-    tauxReduction: number;
-    dateDebut: Date | null;
-    dateFin: Date | null;
-    produits: string[];
-  } = {
+  produits: any[] = [];
+
+  promo = {
     nom: '',
+    produits: [] as string[],
     tauxReduction: 0,
-    dateDebut: null,
-    dateFin: null,
-    produits: []
-  };
-  dateOptions: any = {
-    mode: 'range',
-    minDate: new Date(),
-    onReady: (selectedDates: any, dateStr: string, instance: any) => {
-      this.colorFetes(instance);
-    },
-    onChange: (selectedDates: Date[]) => {
-      if (selectedDates.length === 1) {
-        this.promo.dateDebut = selectedDates[0];
-        this.promo.dateFin = selectedDates[0];
-      } else if (selectedDates.length === 2) {
-        this.promo.dateDebut = selectedDates[0];
-        this.promo.dateFin = selectedDates[1];
-      }
-    }
+    dateDebut: null as Date | null,
+    dateFin: null as Date | null
   };
 
   constructor(
-    private produitService: ProduitService,
     private feteService: FeteService,
+    private produitService: ProduitService,
     private promotionService: PromotionService
   ) {}
 
   ngOnInit() {
-    this.loadProduits();
-    this.loadFetes();
-    setTimeout(() => this.initFlatpickr(), 100); // attend le DOM
-  }
 
-  loadProduits() {
-    this.produitService.getProduits().subscribe(data => {
-      this.produits = data.map(p => ({ ...p, selected: false }));
-    });
-  }
-
-  loadFetes() {
-    this.feteService.getFetes().subscribe((data) => {
+    // charger fetes
+    this.feteService.getFetes().subscribe(data => {
       this.fetes = data.map(f => ({
         nom: f.nom,
-        date: new Date(f.date) // convertit la string en Date
+        date: new Date(f.date)
       }));
     });
-  }
 
-  initFlatpickr() {
-    flatpickr('#promoCalendar', this.dateOptions);
-  }
+    // charger produits
+    this.produitService.getProduits().subscribe(data => {
+      this.produits = data;
+    });
 
-  colorFetes(instance: any) {
-    const days = instance.calendarContainer.querySelectorAll('.flatpickr-day');
-    days.forEach((dayElem: any) => {
-      this.fetes.forEach(fete => {
-        const f = new Date(fete.date);
-        if(dayElem.dateObj.toDateString() === f.toDateString()){
-          dayElem.style.backgroundColor = '#ffcccc';
-          dayElem.title = fete.nom;
+    // initialiser calendrier
+    setTimeout(() => {
+      flatpickr("#calendar", {
+        mode: "range",
+        minDate: "today",
+        dateFormat: "Y-m-d",
+
+        onChange: (selectedDates:any) => {
+          if (selectedDates.length === 1) {
+            this.promo.dateDebut = selectedDates[0];
+            this.promo.dateFin = selectedDates[0];
+          }
+
+          if (selectedDates.length === 2) {
+            this.promo.dateDebut = selectedDates[0];
+            this.promo.dateFin = selectedDates[1];
+          }
+        },
+
+        onDayCreate: (dObj, dStr, fp, dayElem) => {
+          const date = dayElem.dateObj;
+
+          this.fetes.forEach(f => {
+            if (date.toDateString() === f.date.toDateString()) {
+              dayElem.style.backgroundColor = "#ffd6d6";
+              dayElem.title = f.nom;
+            }
+          });
         }
       });
-    });
+    }, 500);
   }
 
-  save() {
-    // produits sélectionnés
-    this.promo.produits = this.produits
-      .filter(p => p.selected)
-      .map(p => p._id);
-
-    if(!this.promo.nom || !this.promo.tauxReduction || !this.promo.dateDebut || this.promo.produits.length === 0){
-      alert('Remplissez tous les champs et sélectionnez au moins un produit.');
-      return;
+  toggleProduit(id: string) {
+    if (this.promo.produits.includes(id)) {
+      this.promo.produits = this.promo.produits.filter(p => p !== id);
+    } else {
+      this.promo.produits.push(id);
     }
+  }
 
-    this.promotionService.addPromotion(this.promo).subscribe(() => {
-      alert('Promotion ajoutée !');
-      this.resetForm();
-    });
+  selectAll() {
+    this.promo.produits = this.produits.map(p => p._id);
   }
 
   resetForm() {
+
+    // Reset objet promo
     this.promo = {
       nom: '',
+      produits: [],
       tauxReduction: 0,
       dateDebut: null,
-      dateFin: null,
-      produits: []
+      dateFin: null
     };
-    this.produits.forEach(p => p.selected = false);
+  
+    // Reset calendrier flatpickr
+    const calendar = document.querySelector("#calendar") as any;
+    if (calendar && calendar._flatpickr) {
+      calendar._flatpickr.clear();
+    }
+  }
+
+  savePromotion() {
+
+    if (this.promo.produits.length === 0) {
+      alert("Sélectionnez au moins un produit");
+      return;
+    }
+  
+    this.promotionService.createPromotion(this.promo)
+      .subscribe({
+        next: () => {
+          alert("Promotion créée !");
+          this.resetForm();
+        },
+        error: (err) => {
+          console.error(err);
+          alert("Erreur création promotion");
+        }
+      });
   }
 }

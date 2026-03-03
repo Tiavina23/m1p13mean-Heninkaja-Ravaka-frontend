@@ -1,7 +1,13 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Auth } from './../services/auth';
+import { Observable } from 'rxjs';
 
+export interface Produit {
+  _id: string;
+  name: string;
+  prix: number;
+}
 
 @Injectable({ 
   providedIn: 'root'
@@ -24,6 +30,10 @@ export class ProduitService {
   // Liste des produits du shop connecté
   getProduits() {
     return this.http.get<any[]>(this.API , this.headers());
+  }
+
+  getPro(): Observable<Produit[]> {
+    return this.http.get<Produit[]>(this.API , this.headers());
   }
 
   addProduit(produit: any) {

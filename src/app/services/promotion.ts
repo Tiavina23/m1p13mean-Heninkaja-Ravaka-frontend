@@ -2,6 +2,8 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Auth } from './auth';
+import { Observable } from 'rxjs';
+
 
 @Injectable({ providedIn: 'root' })
 export class PromotionService {
@@ -17,7 +19,11 @@ export class PromotionService {
     };
   }
 
-  addPromotion(promo: any) {
+  /*addPromotion(promo: any) {
     return this.http.post(this.API, promo, this.headers());
+  } */
+
+  createPromotion(data: any) {
+      return this.http.post(this.API, data, this.headers());
   }
 }

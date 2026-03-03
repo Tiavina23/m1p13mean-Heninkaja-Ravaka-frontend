@@ -1,26 +1,25 @@
-.form-group {
-  margin-bottom: 15px;
+.promo-container {
+  max-width: 600px;
+  margin: auto;
+  background: white;
+  padding: 20px;
+  border-radius: 10px;
 }
 
-input[type="text"], input[type="number"] {
-  width: 200px;
-  padding: 5px;
+label {
+  display: block;
+  margin-top: 15px;
+  font-weight: bold;
 }
 
-#promoCalendar {
-  width: 250px;
-  padding: 5px;
+input {
+  width: 100%;
+  padding: 6px;
+  margin-top: 5px;
 }
 
 button {
-  padding: 7px 15px;
-  background-color: #1976d2;
-  color: white;
-  border: none;
-  border-radius: 4px;
+  margin-top: 15px;
+  padding: 8px 15px;
   cursor: pointer;
-}
-
-button:hover {
-  background-color: #115293;
 }
