@@ -13,7 +13,7 @@ export class AdminService {
   constructor(private http: HttpClient) {}
 
   getPendingShops() {
-    return this.http.get(`${this.API}/pending-shops`);
+    return this.http.get<any[]>(`${this.API}/pending-shops`);
   }
 
   validateShop(id: string) {
@@ -21,7 +21,7 @@ export class AdminService {
   }
 
   getAllShops() {
-  return this.http.get(`${this.API}/all-shops`);
+  return this.http.get<any[]>(`${this.API}/all-shops`);
   }
   deleteShop(id: string) {
   return this.http.delete(`${this.API}/delete-shop/${id}`);
