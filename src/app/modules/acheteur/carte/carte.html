@@ -1,0 +1,78 @@
+<div class="client-view-container">
+    <nav class="top-nav">
+        <button routerLink="/login" class="btn-login">
+        <span class="icon">🔑</span> Connexion
+        </button>
+    </nav>
+  <header class="carte-header">
+    <h1>Notre Sélection</h1>
+    <p class="subtitle">Découvrez nos produits et nos offres exclusives</p>
+  </header>
+
+  <!-- ÉTAT : CHARGEMENT -->
+  <div *ngIf="loading" class="loader-container">
+    <div class="spinner"></div>
+    <p>Préparation de la carte...</p>
+  </div>
+
+  <!-- ÉTAT : LISTE VIDE (Seulement si on a fini de charger sur le navigateur) -->
+  <div *ngIf="!loading && produits.length === 0" class="empty-state">
+    <p>Aucun produit n'est disponible pour le moment. Revenez bientôt !</p>
+  </div>
+
+  <!-- ÉTAT : GRILLE DE PRODUITS -->
+  <div class="product-grid" *ngIf="!loading && produits.length > 0">
+    <div class="product-card" *ngFor="let p of produits" [class.promo-active]="p.enPromotion">
+      
+      <!-- Étiquette Promo -->
+      <div class="promo-badge" *ngIf="p.enPromotion">
+        🔥 -{{ p.taux }}%
+      </div>
+
+      <!-- IMAGE DU PRODUIT -->
+      <div class="product-image-wrapper">
+        <!-- Si p.image est une URL relative, assure-toi qu'elle pointe vers ton back (ex: http://localhost:5000/uploads/...) -->
+        <img [src]="'http://localhost:5000/uploads/' + p.image" [alt]="p.nom" class="product-img">
+        
+
+      </div>
+      
+      <div class="product-content">
+        <h3 class="product-name">{{ p.nom }}</h3>
+        <p class="product-desc">{{ p.description }}</p>
+        
+        <div class="price-container">
+          <!-- SI LE PRODUIT EST EN PROMO -->
+          <div *ngIf="p.enPromotion; else prixNormal" class="price-stack">
+            <div class="economy-text">Économisez {{ (p.prixOriginal - p.prixPromotion) | number:'1.2-2' }}</div>
+            <div class="price-line">
+              <span class="price-current">{{ p.prixPromotion | number:'1.2-2' }} Ar</span>
+              <span class="price-original">{{ p.prixOriginal | number:'1.2-2' }} Ar</span>
+            </div>
+          </div>
+
+          <!-- SI PAS DE PROMO -->
+          <ng-template #prixNormal>
+            <span class="price-regular">{{ p.prixOriginal | number:'1.2-2' }} Ar</span>
+          </ng-template>
+        </div>
+      </div>
+
+      <div class="product-footer">
+        <button class="btn-buy">
+          <span>Ajouter au panier</span>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+<footer class="client-footer">
+  <div class="footer-content">
+    <p>© 2026 - Tous droits réservés</p>
+    <div class="authors">
+      <span class="author-name">RAMANANJATOVO Ravaka F.T</span>
+      <span class="separator">&&</span>
+      <span class="author-name">RAKOTOARIMAMY Mitantsoa H.</span>
+    </div>
+  </div>
+</footer>

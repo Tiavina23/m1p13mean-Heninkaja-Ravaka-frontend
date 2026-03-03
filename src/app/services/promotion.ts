@@ -1,29 +1,40 @@
-// src/app/services/promotion.ts
-import { Injectable } from '@angular/core';
+import { Injectable, Inject, PLATFORM_ID } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { AuthService } from './auth';
-import { Observable } from 'rxjs';
-
+import { isPlatformBrowser } from '@angular/common';
+import { AuthService } from './../services/auth';
+import { Observable, of } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
 export class PromotionService {
-  API = 'http://localhost:5000/api/promotions';
+  private readonly API = 'http://localhost:5000/api/promotions';
 
-  constructor(private http: HttpClient, private auth: AuthService) {}
+  constructor(
+    private http: HttpClient,
+    private authService: AuthService,
+    @Inject(PLATFORM_ID) private platformId: Object // Injecté pour vérifier Client vs Serveur
+  ) {}
 
-  private headers() {
+  private getHttpOptions() {
+    let token = '';
+    
+    // On ne récupère le token que si on est sur le navigateur
+    if (isPlatformBrowser(this.platformId)) {
+      token = this.authService.getToken() || '';
+    }
+
     return {
       headers: new HttpHeaders({
-        Authorization: `Bearer ${this.auth.getToken()}`
+        'Content-Type': 'application/json',
+        'x-access-token': token
       })
     };
   }
 
-  /*addPromotion(promo: any) {
-    return this.http.post(this.API, promo, this.headers());
-  } */
-
-  createPromotion(data: any) {
-      return this.http.post(this.API, data, this.headers());
+  createPromotion(data: any): Observable<any> {
+    // Empêche l'appel API sur le serveur si le token est absent (évite le 403 en SSR)
+    if (!isPlatformBrowser(this.platformId)) {
+      return of(null); 
+    }
+    return this.http.post(this.API, data, this.getHttpOptions());
   }
 }

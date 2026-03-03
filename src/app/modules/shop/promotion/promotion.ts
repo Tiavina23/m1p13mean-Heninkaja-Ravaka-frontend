@@ -1,6 +1,6 @@
-import { CommonModule } from '@angular/common';
+import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Inject, PLATFORM_ID } from '@angular/core';
 import flatpickr from 'flatpickr';
 import { FeteService } from '../../../services/fete';
 import { ProduitService } from '../../../services/produit';
@@ -27,57 +27,58 @@ export class PromotionComponent implements OnInit {
   };
 
   constructor(
+    @Inject(PLATFORM_ID) private platformId: Object, // Injection nécessaire pour détecter le navigateur
     private feteService: FeteService,
     private produitService: ProduitService,
     private promotionService: PromotionService
   ) {}
 
   ngOnInit() {
-
-    // charger fetes
-    this.feteService.getFetes().subscribe(data => {
-      this.fetes = data.map(f => ({
-        nom: f.nom,
-        date: new Date(f.date)
-      }));
-    });
-
-    // charger produits
-    this.produitService.getProduits().subscribe(data => {
-      this.produits = data;
-    });
-
-    // initialiser calendrier
-    setTimeout(() => {
-      flatpickr("#calendar", {
-        mode: "range",
-        minDate: "today",
-        dateFormat: "Y-m-d",
-
-        onChange: (selectedDates:any) => {
-          if (selectedDates.length === 1) {
-            this.promo.dateDebut = selectedDates[0];
-            this.promo.dateFin = selectedDates[0];
-          }
-
-          if (selectedDates.length === 2) {
-            this.promo.dateDebut = selectedDates[0];
-            this.promo.dateFin = selectedDates[1];
-          }
-        },
-
-        onDayCreate: (dObj, dStr, fp, dayElem) => {
-          const date = dayElem.dateObj;
-
-          this.fetes.forEach(f => {
-            if (date.toDateString() === f.date.toDateString()) {
-              dayElem.style.backgroundColor = "#ffd6d6";
-              dayElem.title = f.nom;
-            }
-          });
-        }
+    // On ne charge les données et n'initialise les scripts que sur le client (navigateur)
+    if (isPlatformBrowser(this.platformId)) {
+      
+      // charger fetes
+      this.feteService.getFetes().subscribe(data => {
+        this.fetes = data.map(f => ({
+          nom: f.nom,
+          date: new Date(f.date)
+        }));
       });
-    }, 500);
+
+      // charger produits
+      this.produitService.getProduits().subscribe(data => {
+        this.produits = data;
+      });
+
+      // initialiser calendrier (protégé par isPlatformBrowser pour éviter "window is not defined")
+      setTimeout(() => {
+        flatpickr("#calendar", {
+          mode: "range",
+          minDate: "today",
+          dateFormat: "Y-m-d",
+          onChange: (selectedDates: any) => {
+            if (selectedDates.length === 1) {
+              this.promo.dateDebut = selectedDates[0];
+              this.promo.dateFin = selectedDates[0];
+            }
+            if (selectedDates.length === 2) {
+              this.promo.dateDebut = selectedDates[0];
+              this.promo.dateFin = selectedDates[1];
+            }
+          },
+          onDayCreate: (dObj, dStr, fp, dayElem) => {
+            const date = (dayElem as any).dateObj;
+            this.fetes.forEach(f => {
+              if (date && date.toDateString() === f.date.toDateString()) {
+                dayElem.style.backgroundColor = "#a04646";
+                dayElem.style.color = "#e4dada";
+                dayElem.title = f.nom;
+              }
+            });
+          }
+        });
+      }, 500);
+    }
   }
 
   toggleProduit(id: string) {
@@ -93,8 +94,6 @@ export class PromotionComponent implements OnInit {
   }
 
   resetForm() {
-
-    // Reset objet promo
     this.promo = {
       nom: '',
       produits: [],
@@ -103,15 +102,16 @@ export class PromotionComponent implements OnInit {
       dateFin: null
     };
   
-    // Reset calendrier flatpickr
-    const calendar = document.querySelector("#calendar") as any;
-    if (calendar && calendar._flatpickr) {
-      calendar._flatpickr.clear();
+    // On vérifie qu'on est sur le navigateur avant de toucher au DOM
+    if (isPlatformBrowser(this.platformId)) {
+      const calendar = document.querySelector("#calendar") as any;
+      if (calendar && calendar._flatpickr) {
+        calendar._flatpickr.clear();
+      }
     }
   }
 
   savePromotion() {
-
     if (this.promo.produits.length === 0) {
       alert("Sélectionnez au moins un produit");
       return;
@@ -125,7 +125,7 @@ export class PromotionComponent implements OnInit {
         },
         error: (err) => {
           console.error(err);
-          alert("Erreur création promotion");
+          alert("Erreur création promotion : " + (err.error?.message || "Accès refusé"));
         }
       });
   }

@@ -15,12 +15,12 @@ export class LoginComponent {
   isLoading = false;
   errorMessage = '';
   loginForm: FormGroup;
+
   constructor(
     private fb: FormBuilder,
     private authService: AuthService,
     private router: Router
   ) {
-   
     this.loginForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required, Validators.minLength(4)]]
@@ -28,44 +28,44 @@ export class LoginComponent {
   }
 
   onSubmit() {
+    if (this.loginForm.invalid) return;
 
-    if (this.loginForm.invalid) {
-      return;
-    }
-
-    this.errorMessage = '';
     this.isLoading = true;
+    this.errorMessage = '';
 
+    // ✅ Appel du backend
     this.authService.login(this.loginForm.value).subscribe({
       next: (res: any) => {
+        console.log('LOGIN RESPONSE:', res);
 
-        localStorage.setItem('user', JSON.stringify(res));
-        localStorage.setItem('token', res.accessToken);
-        if (res.role === 'admin') {
-          this.router.navigate(['/admin']);
-        } else if (res.role === 'shop') {
-          this.router.navigate(['/shop']);
-        } else {
-          this.router.navigate(['/home']);
+        // 🔑 Vérifie que le backend renvoie bien role et accessToken
+        if (!res || !res.accessToken || !res.role) {
+          this.errorMessage = "Réponse invalide du serveur";
+          this.isLoading = false;
+          return;
         }
 
+        // Sauvegarde user et token
+        this.authService.saveUser(res);
+
+        // Redirection selon rôle
+        if (res.role === 'admin') {
+          this.router.navigate(['/admin']);
+        } 
+        else if (res.role === 'shop') {
+          this.router.navigate(['/shop']);
+        } 
+        else {
+          this.router.navigate(['/carte']);
+        }
+
+        this.isLoading = false;
       },
-         
 
       error: (err) => {
         this.isLoading = false;
-
-        if (err.status === 403) {
-          this.errorMessage = err.error.message;
-        } else if (err.status === 401) {
-          this.errorMessage = "Mot de passe incorrect";
-        } else if (err.status === 404) {
-          this.errorMessage = "Utilisateur non trouvé";
-        } else {
-          this.errorMessage = "Erreur serveur";
-        }
+        this.errorMessage = err.error?.message || "Email ou mot de passe incorrect";
       }
     });
   }
-
 }

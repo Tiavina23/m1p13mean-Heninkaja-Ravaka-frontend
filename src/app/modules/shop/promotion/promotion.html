@@ -1,27 +1,68 @@
 <div class="promo-container">
-
-  <h2>Créer une Promotion</h2>
-
-  <label>Nom de la promotion</label>
-  <input type="text" [(ngModel)]="promo.nom">
-
-  <label>Taux de réduction (%)</label>
-  <input type="number" [(ngModel)]="promo.tauxReduction">
-
-  <label>Choisir la période</label>
-  <input id="calendar" type="text">
-
-  <h3>Produits</h3>
-
-  <button type="button" (click)="selectAll()">Tout sélectionner</button>
-
-  <div *ngFor="let p of produits">
-    <input type="checkbox"
-           [checked]="promo.produits.includes(p._id)"
-           (change)="toggleProduit(p._id)">
-    {{ p.name }} - {{p.description}}
+  <!-- BOUTON RETOUR -->
+  <div class="header-actions">
+    <button routerLink="/shop" class="btn-back">
+      ← Retour au Tableau de bord
+    </button>
   </div>
 
-  <button (click)="savePromotion()">Enregistrer</button>
+  <div class="promo-wrapper">
+    <div class="promo-card">
+      <div class="promo-header">
+        <span class="icon">🔥</span>
+        <h2>Créer une Promotion</h2>
+        <p>Définissez vos réductions et la période de validité</p>
+      </div>
 
+      <form>
+        <div class="form-group">
+          <label>Nom de la promotion</label>
+          <input type="text" [(ngModel)]="promo.nom" name="nom" placeholder="Ex: Promo Été" class="form-input">
+        </div>
+
+        <div class="form-group">
+          <label>Taux de réduction (%)</label>
+          <input type="number" [(ngModel)]="promo.tauxReduction" name="tauxReduction" placeholder="Ex: 20" class="form-input">
+        </div>
+
+        <div class="form-group">
+          <label>Choisir la période</label>
+          <!-- TON CALENDRIER : ON NE TOUCHE PAS À L'ID NI AU TYPE -->
+          <input id="calendar" type="text" placeholder="Sélectionner la période" readonly class="form-input calendar-input">
+        </div>
+
+        <div class="product-selection-header">
+          <h3>Produits concernés</h3>
+          <button type="button" (click)="selectAll()" class="btn-text">Tout sélectionner</button>
+        </div>
+
+        <div class="produits-list">
+          <div class="produit-item" *ngFor="let p of produits" [class.selected]="promo.produits.includes(p._id)">
+            <label class="checkbox-container">
+              <input type="checkbox"
+                     [checked]="promo.produits.includes(p._id)"
+                     (change)="toggleProduit(p._id)">
+              <span class="checkmark"></span>
+              <span class="prod-name">{{ p.name }} - {{ p.description }}</span>
+            </label>
+          </div>
+        </div>
+
+        <button type="button" (click)="savePromotion()" class="btn-submit">
+          Enregistrer la promotion
+        </button>
+      </form>
+    </div>
+  </div>
 </div>
+
+<footer class="client-footer">
+  <div class="footer-content">
+    <p>© 2026 - Tous droits réservés</p>
+    <div class="authors">
+      <span class="author-name">RAMANANJATOVO Ravaka F.T</span>
+      <span class="separator">&&</span>
+      <span class="author-name">RAKOTOARIMAMY Mitantsoa H.</span>
+    </div>
+  </div>
+</footer>

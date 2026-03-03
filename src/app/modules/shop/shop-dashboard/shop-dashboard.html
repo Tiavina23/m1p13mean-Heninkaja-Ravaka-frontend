@@ -1,28 +1,67 @@
 <div class="shop-dashboard-wrapper">
-
-  <h2>Bienvenue, {{ shopName }}</h2>
-
-  <div class="shop-actions">
-    <button routerLink="/shop/products">Gestion des Produits</button>
-    <button routerLink="/shop/add-promotion">Créer une Promotion</button>
-  </div>
-
-  <h3>Liste de vos produits</h3>
-
-  <div *ngIf="produits.length === 0">
-    Aucun produit pour le moment
-  </div>
-
-  <div class="product-card" *ngFor="let p of produits">
-    <p><strong>Nom :</strong> {{ p.name }}</p>
-    <p><strong>Description :</strong> {{ p.description }}</p>
-    <p><strong>Prix :</strong> {{ p.prix }} Ar</p>
-    <p><strong>Stock :</strong> {{ p.stock }}</p>
-    <div *ngIf="p.image">
-      <img [src]="'http://localhost:5000/uploads/' + p.image" alt="{{p.name}}">
+  
+  <header class="dashboard-header">
+    <div class="welcome-section">
+      <h1> Bienvenue, <span class="shop-name">{{ shopName }}</span></h1>
+      <p>Gérez votre boutique et vos promotions en temps réel.</p>
     </div>
-  </div>
+    
+    <div class="shop-actions">
+      <button routerLink="/shop/products" class="btn-action btn-manage">
+        Gestion des Produits
+      </button>
+      <button routerLink="/shop/add-promotion" class="btn-action btn-promo">
+        Créer une Promotion
+      </button>
+    </div>
+  </header>
+
+  <section class="inventory-section">
+    <div class="section-title">
+      <h3>Liste de vos produits</h3>
+      <span class="product-count">{{ produits.length }} produits au total</span>
+    </div>
+
+    <!-- ÉTAT VIDE -->
+    <div class="empty-state" *ngIf="produits.length === 0">
+      <p>Aucun produit pour le moment. Commencez par en ajouter un !</p>
+    </div>
+
+    <!-- GRILLE DE PRODUITS (STYLE DASHBOARD) -->
+    <div class="dashboard-grid" *ngIf="produits.length > 0">
+      <div class="product-item" *ngFor="let p of produits">
+        
+        <div class="item-image">
+          <img *ngIf="p.image" [src]="'http://localhost:5000/uploads/' + p.image" [alt]="p.name">
+          <div *ngIf="!p.image" class="no-image">📷</div>
+        </div>
+
+        <div class="item-details">
+          <h4 class="item-name">{{ p.name }}</h4>
+          <p class="item-desc">{{ p.description }}</p>
+          
+          <div class="item-meta">
+            <span class="item-price">{{ p.prix | number:'1.0-0' }} Ar</span>
+            <span class="item-stock" [class.low-stock]="p.stock < 5">
+              Stock: <strong>{{ p.stock }}</strong>
+            </span>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
 
 </div>
-  
 
+<!-- FOOTER UNIQUE -->
+<footer class="client-footer">
+  <div class="footer-content">
+    <p>© 2026 - Tous droits réservés</p>
+    <div class="authors">
+      <span class="author-name">RAMANANJATOVO Ravaka F.T</span>
+      <span class="separator">&&</span>
+      <span class="author-name">RAKOTOARIMAMY Mitantsoa H.</span>
+    </div>
+  </div>
+</footer>

@@ -13,6 +13,7 @@ import { ShopDashboard } from './modules/shop/shop-dashboard/shop-dashboard';
 import { authGuard } from './guards/auth-guard';
 import { PromotionComponent } from './modules/shop/promotion/promotion';
 import { ProduitComponent } from './modules/shop/produit/produit';
+import { CarteComponent } from './modules/acheteur/carte/carte';
 
 export const routes: Routes = [
         // Auth routes
@@ -51,6 +52,11 @@ export const routes: Routes = [
             component: PromotionComponent,
             canActivate: [authGuard],
             data: { role: 'shop' }
+        },
+        {
+            path: 'carte',
+            component: CarteComponent
+            
         },
 
         // Accueil / acheteur

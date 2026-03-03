@@ -1,134 +1,86 @@
-/* Container principal */
-.container {
-  max-width: 900px;
-  margin: 50px auto;
-  display: flex;
-  flex-direction: column;
+.admin-container {
+  max-width: 1300px;
+  margin: 0 auto;
+  padding: 20px;
+  min-height: 90vh;
+}
+
+/* Header & Retour */
+.header-actions { margin-bottom: 20px; }
+.btn-back {
+  background: none;
+  border: 1px solid #2f3542;
+  color: #2f3542;
+  padding: 8px 15px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: 0.3s;
+}
+.btn-back:hover { background: #2f3542; color: white; }
+
+/* Grid Layout */
+.main-content-grid {
+  display: grid;
+  grid-template-columns: 400px 1fr;
   gap: 30px;
-  font-family: Arial, sans-serif;
+  align-items: start;
 }
 
-/* Sections formulaire et tableau */
-.form-section, .table-section {
+.card-style {
   background: white;
-  padding: 30px;
-  border-radius: 12px;
-  box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+  padding: 25px;
+  border-radius: 15px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+  border: 1px solid #eee;
 }
 
-/* Titres */
-h2 {
-  text-align: center;
-  color: #1976d2;
-  margin-bottom: 20px;
-}
+h2 { color: #2f3542; margin-bottom: 20px; font-size: 1.4rem; border-left: 5px solid #27ae60; padding-left: 15px; }
 
 /* Formulaire */
-.form-group {
-  margin-bottom: 15px;
-  display: flex;
-  flex-direction: column;
-}
-
-label {
-  font-weight: bold;
-  margin-bottom: 5px;
-}
-
-input[type="text"],
-input[type="number"],
-input[type="file"],
-textarea,
-select {
-  padding: 10px;
-  border-radius: 6px;
-  border: 1px solid #ccc;
+.form-group { margin-bottom: 15px; }
+.form-group label { display: block; margin-bottom: 5px; font-weight: 600; color: #555; font-size: 0.9rem; }
+input, textarea, select {
   width: 100%;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
   box-sizing: border-box;
 }
+.grid-inputs { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
 
-textarea {
-  resize: vertical;
-}
-
-/* Boutons */
-button {
-  padding: 10px;
-  border: none;
-  border-radius: 6px;
-  background: #1976d2;
+.btn-submit {
+  width: 100%;
+  background: #27ae60;
   color: white;
-  font-weight: bold;
+  border: none;
+  padding: 12px;
+  border-radius: 8px;
+  font-weight: 700;
   cursor: pointer;
   margin-top: 10px;
-  transition: background 0.3s;
 }
-
-button:hover {
-  background: #1565c0;
-}
+.btn-submit:disabled { background: #ccc; }
 
 /* Tableau */
-table {
-  width: 100%;
-  border-collapse: collapse;
-}
+.table-wrapper { overflow-x: auto; }
+table { width: 100%; border-collapse: collapse; margin-top: 10px; }
+th { text-align: left; background: #f8f9fa; padding: 12px; color: #2f3542; font-size: 0.9rem; }
+td { padding: 12px; border-bottom: 1px solid #eee; vertical-align: middle; }
 
-th, td {
-  padding: 10px;
-  text-align: left;
-  border-bottom: 1px solid #ddd;
+.img-preview img { width: 50px; height: 50px; object-fit: cover; border-radius: 5px; }
+.text-green { color: #27ae60; font-weight: 700; }
+.stock-badge { 
+  background: #e1f5e9; color: #2e7d32; padding: 3px 8px; border-radius: 5px; font-weight: bold; 
 }
-
-th {
-  background: #f2f2f2;
-}
-
-.product-image {
-  width: 50px;
-  height: 50px;
-  object-fit: cover;
-  border-radius: 6px;
-}
+.stock-badge.low { background: #ffebee; color: #c62828; }
 
 /* Actions */
-td button {
-  margin-right: 5px;
-  padding: 5px 10px;
-  font-size: 14px;
-}
+.actions-cell { display: flex; gap: 10px; }
+.btn-icon { border: none; background: #f1f2f6; padding: 8px; border-radius: 5px; cursor: pointer; transition: 0.2s; }
+.btn-icon.edit:hover { background: #dfe4ea; }
+.btn-icon.delete:hover { background: #ff7675; color: white; }
 
-/* Responsive */
-@media (max-width: 600px) {
-  .container {
-    margin: 20px;
-  }
-
-  table, thead, tbody, th, td, tr {
-    display: block;
-  }
-
-  tr {
-    margin-bottom: 15px;
-  }
-
-  td {
-    padding-left: 50%;
-    position: relative;
-  }
-
-  td::before {
-    position: absolute;
-    top: 10px;
-    left: 10px;
-    width: 45%;
-    white-space: nowrap;
-    font-weight: bold;
-  }
-
-  td:nth-of-type(1)::before { content: "Nom"; }
-  td:nth-of-type(2)::before { content: "Prix"; }
-  td:nth-of-type(3)::before { content: "Stock"; }
-  td:nth-of-type(4)::before { content: "Image"; }
-  td:nth-of-type(5)::before { content: "Actions"; }
-}
+/* Footer */
+.client-footer { margin-top: 50px; padding: 40px; background: #1a1d23; color: white; text-align: center; border-top: 5px solid #27ae60; }
+.author-name { color: #27ae60; font-weight: bold; }

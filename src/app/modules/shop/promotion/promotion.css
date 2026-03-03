@@ -1,84 +1,68 @@
-/* Container principal, centré comme le login */
 .promo-container {
-  max-width: 450px;
-  margin: 50px auto;
-  padding: 40px;
-  background: white;
-  border-radius: 12px;
-  box-shadow: 0 10px 25px rgba(0,0,0,0.2);
-  display: flex;
-  flex-direction: column;
-  gap: 15px;
-  font-family: Arial, sans-serif;
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+  min-height: 90vh;
 }
 
-/* Titres */
-.promo-container h2, .promo-container h3 {
-  text-align: center;
-  color: #1976d2;
-  margin-bottom: 15px;
+/* Bouton Retour */
+.btn-back {
+  background: none; border: 1px solid #2f3542; color: #2f3542;
+  padding: 8px 15px; border-radius: 8px; cursor: pointer; font-weight: 600;
 }
 
-/* Labels */
-.promo-container label {
-  font-weight: bold;
-  margin-bottom: 5px;
-  display: block;
+/* Carte principale */
+.promo-card {
+  background: white; border-radius: 20px; padding: 40px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.08); border: 1px solid #eee;
+  margin-top: 20px;
 }
 
-/* Inputs */
-.promo-container input[type="text"],
-.promo-container input[type="number"],
-.promo-container input[type="checkbox"],
-.promo-container input#calendar {
-  width: 100%;
-  padding: 10px;
-  margin-bottom: 10px;
-  border-radius: 6px;
-  border: 1px solid #ccc;
-  box-sizing: border-box;
+.promo-header { text-align: center; margin-bottom: 30px; }
+.promo-header .icon { font-size: 2.5rem; display: block; margin-bottom: 10px; }
+.promo-header h2 { color: #2f3542; font-weight: 800; margin: 0; }
+
+/* Formulaire */
+.form-group { margin-bottom: 20px; }
+.form-group label { display: block; margin-bottom: 8px; font-weight: 600; color: #555; }
+.form-input {
+  width: 100%; padding: 12px; border: 2px solid #f1f2f6;
+  border-radius: 10px; font-size: 1rem; transition: 0.3s; box-sizing: border-box;
+}
+.form-input:focus { border-color: #27ae60; outline: none; background: #f9fffb; }
+
+/* Liste des produits */
+.product-selection-header {
+  display: flex; justify-content: space-between; align-items: center;
+  margin-top: 30px; border-bottom: 2px solid #eee; padding-bottom: 10px;
+}
+.btn-text { background: none; border: none; color: #27ae60; font-weight: 700; cursor: pointer; }
+
+.produits-list {
+  max-height: 200px; overflow-y: auto; margin: 15px 0;
+  padding: 10px; background: #f8f9fa; border-radius: 10px;
 }
 
-/* Checkbox liste */
-.promo-container div {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  margin-bottom: 5px;
+.produit-item {
+  padding: 10px; border-bottom: 1px solid #eee; transition: 0.2s;
+  border-radius: 8px;
 }
+.produit-item.selected { background: #e1f5e9; }
 
-/* Boutons */
-.promo-container button {
-  padding: 10px;
-  border: none;
-  border-radius: 6px;
-  background: #1976d2;
-  color: white;
-  font-weight: bold;
-  cursor: pointer;
-  margin-top: 10px;
-  transition: background 0.3s;
-}
+.checkbox-container { display: flex; align-items: center; cursor: pointer; gap: 10px; }
+.prod-name { font-size: 0.95rem; color: #2f3542; }
 
-.promo-container button:hover {
-  background: #1565c0;
+/* Bouton final */
+.btn-submit {
+  width: 100%; padding: 15px; background: #2f3542; color: white;
+  border: none; border-radius: 12px; font-weight: 800; font-size: 1.1rem;
+  cursor: pointer; transition: 0.3s; margin-top: 20px;
 }
+.btn-submit:hover { background: #27ae60; transform: translateY(-3px); }
 
-.promo-container button:disabled {
-  background: gray;
-  cursor: not-allowed;
+/* Footer */
+.client-footer {
+  margin-top: 60px; padding: 40px; background: #1a1d23; color: white;
+  text-align: center; border-top: 5px solid #27ae60;
 }
-
-/* Input du calendrier (flatpickr) */
-#calendar {
-  cursor: pointer;
-  background: #f9f9f9;
-}
-
-/* Responsive */
-@media (max-width: 500px) {
-  .promo-container {
-    margin: 20px;
-    padding: 20px;
-  }
-}
+.author-name { color: #27ae60; font-weight: bold; }

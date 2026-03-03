@@ -15,26 +15,22 @@ export interface Produit {
 
 export class ProduitService {
 
-  API = 'http://localhost:5000/api/produits';
+  API_URL = 'http://localhost:5000/api/produits';
 
-  constructor(private http: HttpClient, private auth: AuthService) {}
+  constructor(private http: HttpClient, private authService: AuthService) {}
 
-  private headers() {
-    return {
-      headers: new HttpHeaders({
-        Authorization: `Bearer ${this.auth.getToken()}`
-      })
-    };
+  private getHeaders() {
+    const token = this.authService.getToken(); // Récupère le token via ton AuthService
+    return new HttpHeaders({
+      'x-access-token': token || '' // Vérifie si ton backend attend 'x-access-token' ou 'Authorization'
+    });
   }
 
   // Liste des produits du shop connecté
-  getProduits() {
-    return this.http.get<any[]>(this.API , this.headers());
+  getProduits(): Observable<any[]> {
+    return this.http.get<any[]>(this.API_URL, { headers: this.getHeaders() });
   }
 
-  getPro(): Observable<Produit[]> {
-    return this.http.get<Produit[]>(this.API , this.headers());
-  }
 
   addProduit(produit: any) {
     const formData = new FormData();
@@ -45,7 +41,7 @@ export class ProduitService {
     formData.append('categorie', produit.categorie);
     if (produit.image) formData.append('image', produit.image);
 
-    return this.http.post(this.API, formData, this.headers());
+    return this.http.post(this.API_URL, formData, { headers: this.getHeaders() });
   }
 
   updateProduit(id: string, produit: any) {
@@ -57,10 +53,10 @@ export class ProduitService {
     formData.append('categorie', produit.categorie);
     if (produit.image) formData.append('image', produit.image);
 
-    return this.http.put(`${this.API}/${id}`, formData, this.headers());
+    return this.http.put(`${this.API_URL}/${id}`, formData, { headers: this.getHeaders() });
   }
 
   deleteProduit(id: string) {
-    return this.http.delete(`${this.API}/${id}`, this.headers());
+    return this.http.delete(`${this.API_URL}/${id}`, { headers: this.getHeaders() });
   }
 }

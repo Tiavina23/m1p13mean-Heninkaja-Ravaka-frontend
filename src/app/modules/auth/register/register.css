@@ -1,61 +1,73 @@
+/* Utilisation du même wrapper que Login */
 .login-wrapper {
-  height: 100vh;
+  min-height: 85vh;
   display: flex;
   justify-content: center;
   align-items: center;
-  background: linear-gradient(135deg, #1976d2, #42a5f5);
+  background-color: #fcfcfc;
+  padding: 40px 20px;
 }
 
 .login-card {
   background: white;
+  width: 100%;
+  max-width: 450px;
   padding: 40px;
-  width: 350px;
-  border-radius: 12px;
-  box-shadow: 0 10px 25px rgba(0,0,0,0.2);
-  text-align: center;
+  border-radius: 20px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+  border: 1px solid #eaeaea;
 }
 
-h2 {
+.login-header { text-align: center; margin-bottom: 30px; }
+.login-header h2 { color: #2f3542; font-size: 1.8rem; font-weight: 800; margin: 0; }
+.login-header p { color: #7f8c8d; font-size: 0.9rem; }
+
+/* Styles des champs */
+.form-group { text-align: left; margin-bottom: 18px; }
+.form-group label { display: block; font-weight: 600; margin-bottom: 6px; color: #2f3542; font-size: 0.85rem; }
+
+input, .form-select {
+  width: 100%; padding: 12px 15px; border: 2px solid #eee;
+  border-radius: 12px; font-size: 1rem; box-sizing: border-box; transition: 0.3s;
+}
+
+input:focus, .form-select:focus { border-color: #27ae60; outline: none; background-color: #f9fffb; }
+
+/* Encadré pour les champs Shop */
+.shop-fields-box {
+  background: #f1f2f6;
+  padding: 20px;
+  border-radius: 15px;
   margin-bottom: 20px;
+  border-left: 5px solid #27ae60;
 }
 
-.form-group {
-  margin-bottom: 15px;
-  text-align: left;
+/* Bouton Vert */
+.btn-submit {
+  width: 100%; padding: 14px; background-color: #2f3542; color: white;
+  border: none; border-radius: 12px; font-weight: 700; cursor: pointer; transition: 0.3s;
 }
 
-input, select {
-  width: 100%;
-  padding: 10px;
-  border-radius: 6px;
-  border: 1px solid #ccc;
+.btn-submit:hover:not(:disabled) {
+  background-color: #27ae60;
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(39, 174, 96, 0.3);
 }
 
-small {
-  color: red;
-  font-size: 12px;
-}
+.btn-submit:disabled { opacity: 0.5; cursor: not-allowed; }
 
-button {
-  width: 100%;
-  padding: 10px;
-  border: none;
-  border-radius: 6px;
-  background: #1976d2;
-  color: white;
-  font-weight: bold;
-  cursor: pointer;
-}
+/* Alertes */
+.error-text { color: #e74c3c; font-size: 0.75rem; margin-top: 4px; display: block; }
+.error-msg { background: #fee; color: #e74c3c; padding: 12px; border-radius: 10px; margin-top: 15px; font-size: 0.9rem; }
+.success-msg { background: #e1f5e9; color: #2e7d32; padding: 12px; border-radius: 10px; margin-top: 15px; font-size: 0.9rem; text-align: center; font-weight: 600; }
 
-button:disabled {
-  background: gray;
-}
+.register-link { margin-top: 25px; text-align: center; font-size: 0.9rem; color: #7f8c8d; }
+.register-link a { color: #27ae60; font-weight: 700; text-decoration: none; }
 
-.error {
-  margin-top: 10px;
-  color: red;
+/* Footer */
+.client-footer {
+  padding: 50px 20px; background-color: #1a1d23; color: white;
+  text-align: center; border-top: 5px solid #27ae60;
 }
-
-.register-link {
-  margin-top: 15px;
-}
+.author-name { color: #27ae60; font-weight: bold; }
+.authors { display: flex; justify-content: center; gap: 10px; margin-top: 10px; }
