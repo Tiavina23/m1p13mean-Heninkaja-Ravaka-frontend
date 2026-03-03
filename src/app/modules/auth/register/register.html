@@ -5,27 +5,40 @@
 
     <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
 
+      <!-- NOM -->
       <div class="form-group">
-        <input type="text" formControlName="name" placeholder="Nom">
+        <input 
+          type="text" 
+          formControlName="name" 
+          placeholder="Nom complet">
         <small *ngIf="registerForm.get('name')?.invalid && registerForm.get('name')?.touched">
           Nom obligatoire
         </small>
       </div>
 
+      <!-- EMAIL -->
       <div class="form-group">
-        <input type="email" formControlName="email" placeholder="Email">
+        <input 
+          type="email" 
+          formControlName="email" 
+          placeholder="Email">
         <small *ngIf="registerForm.get('email')?.invalid && registerForm.get('email')?.touched">
           Email invalide
         </small>
       </div>
 
+      <!-- PASSWORD -->
       <div class="form-group">
-        <input type="password" formControlName="password" placeholder="Mot de passe">
+        <input 
+          type="password" 
+          formControlName="password" 
+          placeholder="Mot de passe">
         <small *ngIf="registerForm.get('password')?.invalid && registerForm.get('password')?.touched">
           Minimum 4 caractères
         </small>
       </div>
 
+      <!-- ROLE -->
       <div class="form-group">
         <select formControlName="role">
           <option value="acheteur">Acheteur</option>
@@ -33,20 +46,43 @@
         </select>
       </div>
 
+      <!-- CHAMPS SHOP (AFFICHÉ SEULEMENT SI ROLE = SHOP) -->
+      <div *ngIf="registerForm.get('role')?.value === 'shop'">
+
+        <div class="form-group">
+          <input 
+            type="text" 
+            formControlName="shopName" 
+            placeholder="Nom du shop">
+        </div>
+
+        <div class="form-group">
+          <input 
+            type="text" 
+            formControlName="shopDescription" 
+            placeholder="Description du shop">
+        </div>
+
+      </div>
+
+      <!-- BUTTON -->
       <button type="submit" [disabled]="registerForm.invalid">
         S'inscrire
       </button>
 
     </form>
 
+    <!-- MESSAGE ERREUR -->
     <div *ngIf="errorMessage" class="error">
       {{ errorMessage }}
     </div>
 
+    <!-- MESSAGE SUCCÈS -->
     <div *ngIf="message" style="color: green; margin-top:10px;">
       {{ message }}
     </div>
 
+    <!-- LINK LOGIN -->
     <div class="register-link">
       <p>Déjà un compte ?</p>
       <a routerLink="/login">Se connecter</a>

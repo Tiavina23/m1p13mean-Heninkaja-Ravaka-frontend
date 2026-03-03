@@ -1,51 +1,32 @@
-<div class="dashboard-wrapper">
+<div class="admin-wrapper">
 
-  <div class="dashboard-card">
+  <h1>Admin Dashboard</h1>
 
-    <h2>📊 Admin Dashboard</h2>
+  <!-- BOUTON POPUP SHOP VALIDATION -->
+  <button (click)="openShopValidation()">
+    🔔 Valider les shops ({{ pendingShopsCount }})
+  </button>
 
-    <!-- 🔔 Notifications -->
-    <div class="notification-box">
-      <h3>
-        🔔 Shops en attente 
-        <span *ngIf="pendingShops.length > 0" class="badge">
-          {{ pendingShops.length }}
-        </span>
-      </h3>
-
-      <div *ngIf="pendingShops.length === 0">
-        Aucun shop en attente.
-      </div>
-
-      <div *ngFor="let shop of pendingShops" class="pending-item">
-        {{ shop.name }} - {{ shop.email }}
-      </div>
-
-      <a routerLink="/admin/validation" class="validate-link">
-        Voir & Valider
-      </a>
+  <!-- POPUP SHOP VALIDATION -->
+  <div class="modal" [class.show]="isShopValidationOpen">
+    <div class="modal-content">
+      <span class="close" (click)="closeShopValidation()">&times;</span>
+      <app-shop-validation></app-shop-validation>
     </div>
+  </div>
 
-    <hr>
+  <hr>
 
-    <!-- 📋 Liste complète -->
-    <h3>🏪 Tous les Shops</h3>
+  <h2>Liste des shops validés</h2>
 
-    <div *ngFor="let shop of allShops" class="shop-item">
+  <div *ngIf="shops.length === 0">
+    Aucun shop disponible
+  </div>
 
-      <div>
-        <strong>{{ shop.name }}</strong><br>
-        {{ shop.email }}
-      </div>
-
-      <span 
-        [class.active]="shop.isActive"
-        [class.inactive]="!shop.isActive">
-        {{ shop.isActive ? 'Actif' : 'En attente' }}
-      </span>
-
-    </div>
-
+  <div *ngFor="let shop of shops" class="shop-card">
+    <p><strong>Nom :</strong> {{ shop.name }}</p>
+    <p><strong>Propriétaire :</strong> {{ shop.owner?.name }}</p>
+    <p><strong>Email :</strong> {{ shop.owner?.email }}</p>
   </div>
 
 </div>

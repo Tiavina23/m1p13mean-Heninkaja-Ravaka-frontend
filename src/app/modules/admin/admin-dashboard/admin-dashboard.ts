@@ -1,36 +1,51 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { AdminService } from '../../../services/admin';
 import { RouterModule } from '@angular/router';
-
+import { ShopValidation } from '../shop-validation/shop-validation';
+import { AdminService } from '../../../services/admin';
 @Component({
   selector: 'app-admin-dashboard',
   standalone: true,
-  imports: [CommonModule, RouterModule],
+  imports: [CommonModule, RouterModule , ShopValidation],
   templateUrl: './admin-dashboard.html',
   styleUrl: './admin-dashboard.css'
 })
-export class AdminDashboardComponent implements OnInit {
+export class AdminDashboardComponent  {
 
-  allShops: any[] = [];
-  pendingShops: any[] = [];
+  isShopValidationOpen = false;
+  shops: any[] = [];       // liste des shops validés
+  pendingShopsCount = 0;   // nombre de shops en attente
 
   constructor(private adminService: AdminService) {}
 
   ngOnInit() {
-    this.loadAllShops();
-    this.loadPendingShops();
+    this.loadShops();
+    this.loadPendingShopsCount();
   }
 
-  loadAllShops() {
-    this.adminService.getAllShops().subscribe((data: any) => {
-      this.allShops = data;
-    });
+  openShopValidation() {
+    this.isShopValidationOpen = true;
   }
 
-  loadPendingShops() {
-    this.adminService.getPendingShops().subscribe((data: any) => {
-      this.pendingShops = data;
-    });
+  closeShopValidation() {
+    this.isShopValidationOpen = false;
+    // recharge les shops et pending après fermeture
+    this.loadShops();
+    this.loadPendingShopsCount();
+  }
+
+  loadShops() {
+    this.adminService.getAllShops().subscribe(
+      (data: any) => this.shops = data,
+      err => console.error(err)
+    );
+  }
+
+  loadPendingShopsCount() {
+    this.adminService.getPendingShops().subscribe(
+      (data: any) => this.pendingShopsCount = data.length,
+      err => console.error(err)
+    );
   }
 }
+

@@ -1,25 +1,27 @@
-import { CanActivateFn, Router, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
 import { inject } from '@angular/core';
+import { CanActivateFn, Router } from '@angular/router';
+import { isPlatformBrowser } from '@angular/common';
+import { PLATFORM_ID } from '@angular/core';
 
-export const authGuard: CanActivateFn = (route: ActivatedRouteSnapshot, state: RouterStateSnapshot) => {
+export const authGuard: CanActivateFn = (route, state) => {
+
   const router = inject(Router);
+  const platformId = inject(PLATFORM_ID);
 
-  // Récupération du user depuis localStorage
-  const user = JSON.parse(localStorage.getItem('user')!);
+  // ✅ Vérifier si on est dans le navigateur
+  if (isPlatformBrowser(platformId)) {
 
-  if (!user) {
-    // pas connecté → redirection login
-    router.navigate(['/login']);
-    return false;
+    const token = localStorage.getItem('token');
+
+    if (token) {
+      return true;
+    } else {
+      router.navigate(['/login']);
+      return false;
+    }
+
   }
 
-  
-  const expectedRole = route.data['role'];
-  if (expectedRole && user.role !== expectedRole) {
-    router.navigate(['/login']); // rôle non autorisé
-    return false;
-  }
-
-  
+  // Si SSR (serveur), autoriser sans localStorage
   return true;
 };

@@ -1,0 +1,84 @@
+/* Container principal, centré comme le login */
+.promo-container {
+  max-width: 450px;
+  margin: 50px auto;
+  padding: 40px;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  font-family: Arial, sans-serif;
+}
+
+/* Titres */
+.promo-container h2, .promo-container h3 {
+  text-align: center;
+  color: #1976d2;
+  margin-bottom: 15px;
+}
+
+/* Labels */
+.promo-container label {
+  font-weight: bold;
+  margin-bottom: 5px;
+  display: block;
+}
+
+/* Inputs */
+.promo-container input[type="text"],
+.promo-container input[type="number"],
+.promo-container input[type="checkbox"],
+.promo-container input#calendar {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 10px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  box-sizing: border-box;
+}
+
+/* Checkbox liste */
+.promo-container div {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 5px;
+}
+
+/* Boutons */
+.promo-container button {
+  padding: 10px;
+  border: none;
+  border-radius: 6px;
+  background: #1976d2;
+  color: white;
+  font-weight: bold;
+  cursor: pointer;
+  margin-top: 10px;
+  transition: background 0.3s;
+}
+
+.promo-container button:hover {
+  background: #1565c0;
+}
+
+.promo-container button:disabled {
+  background: gray;
+  cursor: not-allowed;
+}
+
+/* Input du calendrier (flatpickr) */
+#calendar {
+  cursor: pointer;
+  background: #f9f9f9;
+}
+
+/* Responsive */
+@media (max-width: 500px) {
+  .promo-container {
+    margin: 20px;
+    padding: 20px;
+  }
+}
