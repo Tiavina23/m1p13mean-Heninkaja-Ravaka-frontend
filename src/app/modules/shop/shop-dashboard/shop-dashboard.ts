@@ -2,13 +2,13 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common'; // ← nécessaire pour *ngIf et *ngFor
 import { ProduitService } from '../../../services/produit';
 import { AuthService } from '../../../services/auth';
-
+import { RouterModule } from '@angular/router';
 @Component({
   selector: 'app-shop-dashboard',
   templateUrl: './shop-dashboard.html',
   styleUrls: ['./shop-dashboard.css'],
-  standalone: true,          // si tu utilises Angular Standalone Component
-  imports: [CommonModule]    // ← ajoute CommonModule ici
+  standalone: true,
+  imports: [CommonModule, RouterModule]
 })
 export class ShopDashboard implements OnInit {
 

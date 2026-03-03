@@ -1,80 +1,110 @@
-<div class="container">
-
-  <div class="form-section">
-    <h2>Gestion de produits </h2>
-
-    <form (ngSubmit)="save()">
-
-      <div class="form-group">
-        <label>Nom</label>
-        <input type="text" [(ngModel)]="produit.name" name="name" required>
-      </div>
-
-      <div class="form-group">
-        <label>Description</label>
-        <textarea [(ngModel)]="produit.description" name="description"></textarea>
-      </div>
-
-      <div class="form-group">
-        <label>Prix (Ar)</label>
-        <input type="number" [(ngModel)]="produit.prix" name="prix" required>
-      </div>
-
-      <div class="form-group">
-        <label>Stock</label>
-        <input type="number" [(ngModel)]="produit.stock" name="stock">
-      </div>
-
-      <div class="form-group">
-        <label>Catégorie</label>
-        <select [(ngModel)]="produit.categorie" name="categorie" required>
-          <option *ngFor="let c of categories" [ngValue]="c._id">
-            {{c.name}}
-          </option>
-        </select>
-      </div>
-
-      <div class="form-group">
-        <label>Image</label>
-        <input type="file" (change)="onFileSelected($event)">
-      </div>
-
-      <button type="submit">
-        {{isEdit ? 'Modifier' : 'Ajouter'}}
-      </button>
-
-    </form>
+<div class="admin-container">
+  <!-- BOUTON RETOUR -->
+  <div class="header-actions">
+    <button routerLink="/shop" class="btn-back">
+      ← Retour au Tableau de bord
+    </button>
   </div>
 
+  <div class="main-content-grid">
+    <!-- SECTION FORMULAIRE -->
+    <section class="form-section card-style">
+      <h2>{{ isEdit ? 'Modifier le produit' : 'Ajouter un produit' }}</h2>
+      
+      <form (ngSubmit)="save()" #productForm="ngForm">
+        <div class="form-group">
+          <label>Nom du produit</label>
+          <input type="text" [(ngModel)]="produit.name" name="name" required placeholder="Ex: Pizza Royale">
+        </div>
 
-  <div class="table-section">
-    <h2>Liste des produits</h2>
+        <div class="form-group">
+          <label>Description</label>
+          <textarea [(ngModel)]="produit.description" name="description" placeholder="Description courte..."></textarea>
+        </div>
 
-    <table>
-      <tr>
-        <th>Nom</th>
-        <th>Prix</th>
-        <th>Stock</th>
-        <th>Image</th>
-        <th>Actions</th>
-      </tr>
+        <div class="grid-inputs">
+          <div class="form-group">
+            <label>Prix (Ar)</label>
+            <input type="number" [(ngModel)]="produit.prix" name="prix" required>
+          </div>
+          <div class="form-group">
+            <label>Stock</label>
+            <input type="number" [(ngModel)]="produit.stock" name="stock">
+          </div>
+        </div>
 
-      <tr *ngFor="let p of produits">
-        <td>{{p.name}}</td>
-        <td>{{p.prix}} Ar</td>
-        <td>{{p.stock}}</td>
-        <td>
-          <img 
-            *ngIf="p.image"
-            [src]="'http://localhost:5000/uploads/' + p.image"
-            class="product-image">
-        </td>
-        <td>
-          <button (click)="edit(p)">Edit</button>
-          <button (click)="delete(p._id)">Delete</button>
-        </td>
-      </tr>
-    </table>
+        <div class="form-group">
+          <label>Catégorie</label>
+          <select [(ngModel)]="produit.categorie" name="categorie" required>
+            <option value="" disabled selected>Choisir une catégorie</option>
+            <option *ngFor="let c of categories" [ngValue]="c._id">
+              {{c.name}}
+            </option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label>Image du produit</label>
+          <div class="file-input-wrapper">
+             <input type="file" (change)="onFileSelected($event)" id="file-upload">
+             <label for="file-upload" class="btn-secondary">Choisir un fichier</label>
+          </div>
+        </div>
+
+        <button type="submit" class="btn-submit" [disabled]="!productForm.form.valid">
+          {{ isEdit ? 'Enregistrer les modifications' : 'Ajouter à l\'inventaire' }}
+        </button>
+        <button type="button" *ngIf="isEdit" (click)="resetForm()" class="btn-cancel">Annuler</button>
+      </form>
+    </section>
+
+    <!-- SECTION TABLEAU -->
+    <section class="table-section card-style">
+      <h2>Liste des produits</h2>
+      
+      <div class="table-wrapper">
+        <table>
+          <thead>
+            <tr>
+              <th>Aperçu</th>
+              <th>Nom</th>
+              <th>Prix</th>
+              <th>Stock</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let p of produits">
+              <td>
+                <div class="img-preview">
+                  <img *ngIf="p.image" [src]="'http://localhost:5000/uploads/' + p.image" alt="Product">
+                  <span *ngIf="!p.image">🚫</span>
+                </div>
+              </td>
+              <td class="font-bold">{{p.name}}</td>
+              <td class="text-green">{{p.prix | number}} Ar</td>
+              <td>
+                <span class="stock-badge" [class.low]="p.stock < 5">{{p.stock}}</span>
+              </td>
+              <td class="actions-cell">
+                <button class="btn-icon edit" (click)="edit(p)" title="Modifier">✏️</button>
+                <button class="btn-icon delete" (click)="delete(p._id)" title="Supprimer">🗑️</button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
   </div>
-
 </div>
+
+<footer class="client-footer">
+  <div class="footer-content">
+    <p>© 2026 - Tous droits réservés</p>
+    <div class="authors">
+      <span class="author-name">RAMANANJATOVO Ravaka F.T</span>
+      <span class="separator">&&</span>
+      <span class="author-name">RAKOTOARIMAMY Mitantsoa H.</span>
+    </div>
+  </div>
+</footer>

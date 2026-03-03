@@ -1,0 +1,221 @@
+.client-view-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 40px 20px;
+  background-color: #fcfcfc;
+}
+
+.carte-header {
+  text-align: center;
+  margin-bottom: 50px;
+}
+
+/* Grille flexible */
+.product-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 30px;
+}
+
+/* LE CADRE (CARD) */
+.product-card {
+  position: relative;
+  background: white;
+  border-radius: 20px;
+  overflow: hidden; /* Pour que l'image ne dépasse pas des arrondis */
+  border: 1px solid #eaeaea;
+  transition: all 0.3s ease;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+}
+
+.product-card:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 12px 30px rgba(0,0,0,0.1);
+  border-color: #d1d1d1;
+}
+
+/* Style spécifique si Promo */
+.promo-active {
+  border: 1px solid #27ae6055;
+  background: linear-gradient(180deg, #ffffff 0%, #f7fff9 100%);
+}
+
+/* IMAGE */
+.product-image-wrapper {
+  width: 100%;
+  height: 200px;
+  overflow: hidden;
+  background-color: #f0f0f0;
+}
+
+.product-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* Remplit le cadre sans déformer */
+  transition: transform 0.5s ease;
+}
+
+.product-card:hover .product-img {
+  transform: scale(1.1); /* Zoom léger au survol */
+}
+
+/* CONTENU TEXTE */
+.product-content {
+  padding: 20px;
+  flex-grow: 1;
+}
+
+.product-name {
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: #2c3e50;
+  margin-bottom: 10px;
+}
+
+.product-desc {
+  font-size: 0.9rem;
+  color: #7f8c8d;
+  line-height: 1.4;
+  height: 40px; /* Limite à 2 lignes environ */
+  overflow: hidden;
+}
+
+/* PRIX */
+.price-container {
+  margin-top: 20px;
+}
+
+.price-current, .price-regular {
+  font-size: 1.6rem;
+  font-weight: 800;
+  color: #27ae60;
+}
+
+.price-original {
+  text-decoration: line-through;
+  color: #bdc3c7;
+  font-size: 1rem;
+  margin-left: 10px;
+}
+
+.economy-text {
+  font-size: 0.75rem;
+  color: #e74c3c;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+/* BADGE PROMO */
+.promo-badge {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  background: #e74c3c;
+  color: white;
+  padding: 6px 12px;
+  border-radius: 30px;
+  font-weight: 800;
+  font-size: 0.85rem;
+  z-index: 10;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+}
+
+/* BOUTON */
+.product-footer {
+  padding: 0 20px 20px 20px;
+}
+
+.btn-buy {
+  width: 100%;
+  padding: 12px;
+  background: #2c3e50;
+  color: white;
+  border: none;
+  border-radius: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.btn-buy:hover {
+  background: #34495e;
+}
+
+
+
+
+
+
+.client-footer {
+  margin-top: 80px; /* Espace après la grille de produits */
+  padding: 40px 20px;
+  background-color: #2f3542; /* Couleur sombre pro */
+  color: #ffffff;
+  text-align: center;
+  border-top: 4px solid #27ae60; /* Rappel de la couleur promo */
+}
+
+.footer-content p {
+  margin: 0;
+  font-size: 0.9rem;
+  opacity: 0.7;
+  margin-bottom: 10px;
+}
+
+.authors {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 15px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  flex-wrap: wrap; /* S'adapte sur mobile */
+}
+
+.author-name {
+  color: #27ae60; /* Vert pour faire ressortir les noms */
+  text-transform: uppercase;
+  font-size: 0.95rem;
+}
+
+.separator {
+  color: #ffffff;
+  font-weight: 400;
+  opacity: 0.5;
+}
+
+/* Optionnel : pour que le footer reste en bas si la page est vide */
+.client-view-container {
+  min-height: calc(100vh - 200px);
+}
+
+
+
+.top-nav {
+  display: flex;
+  justify-content: flex-end; /* Aligne le bouton à DROITE */
+  padding: 15px 20px;
+}
+
+.btn-login {
+  background: white;
+  color: #2c3e50;
+  border: 2px solid #2c3e50;
+  padding: 8px 20px;
+  border-radius: 50px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.btn-login:hover {
+  background: #2c3e50;
+  color: white;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}

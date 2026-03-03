@@ -1,32 +1,67 @@
 <div class="admin-wrapper">
+  <header class="admin-header">
+    <div class="title-section">
+      <span class="badge-admin">ADMINISTRATEUR</span>
+      <h1>Tableau de Bord Admin</h1>
+      <p>Supervision des boutiques et validations des comptes</p>
+    </div>
 
-  <h1>Admin Dashboard</h1>
-
-  <!-- BOUTON POPUP SHOP VALIDATION -->
-  <button (click)="openShopValidation()">
-    🔔 Valider les shops ({{ pendingShopsCount }})
-  </button>
+    <!-- BOUTON POPUP SHOP VALIDATION -->
+    <button (click)="openShopValidation()" class="btn-validation" [class.has-pending]="pendingShopsCount > 0">
+      <span class="bell-icon">🔔</span> 
+      Valider les shops 
+      <span class="count-badge" *ngIf="pendingShopsCount > 0">{{ pendingShopsCount }}</span>
+    </button>
+  </header>
 
   <!-- POPUP SHOP VALIDATION -->
-  <div class="modal" [class.show]="isShopValidationOpen">
-    <div class="modal-content">
-      <span class="close" (click)="closeShopValidation()">&times;</span>
-      <app-shop-validation></app-shop-validation>
+  <div class="modal-overlay" *ngIf="isShopValidationOpen" (click)="closeShopValidation()">
+    <div class="modal-content" (click)="$event.stopPropagation()">
+      <div class="modal-header">
+        <h3>Validations en attente</h3>
+        <span class="close-btn" (click)="closeShopValidation()">&times;</span>
+      </div>
+      <div class="modal-body">
+        <app-shop-validation></app-shop-validation>
+      </div>
     </div>
   </div>
 
-  <hr>
+  <hr class="separator">
 
-  <h2>Liste des shops validés</h2>
+  <section class="shops-section">
+    <div class="section-header">
+      <h2>Liste des shops validés</h2>
+      <span class="total-count">{{ shops.length }} boutiques actives</span>
+    </div>
 
-  <div *ngIf="shops.length === 0">
-    Aucun shop disponible
-  </div>
+    <div *ngIf="shops.length === 0" class="empty-state">
+      <p>Aucun shop disponible pour le moment.</p>
+    </div>
 
-  <div *ngFor="let shop of shops" class="shop-card">
-    <p><strong>Nom :</strong> {{ shop.name }}</p>
-    <p><strong>Propriétaire :</strong> {{ shop.owner?.name }}</p>
-    <p><strong>Email :</strong> {{ shop.owner?.email }}</p>
-  </div>
-
+    <div class="admin-grid">
+      <div *ngFor="let shop of shops" class="shop-admin-card">
+        <div class="shop-info">
+          <h4 class="shop-title">{{ shop.name }}</h4>
+          <p class="owner-info">👤 <strong>Propriétaire :</strong> {{ shop.owner?.name }}</p>
+          <p class="email-info">📧 <strong>Email :</strong> {{ shop.owner?.email }}</p>
+        </div>
+        <div class="status-indicator">
+          <span class="status-pill">ACTIF</span>
+        </div>
+      </div>
+    </div>
+  </section>
 </div>
+
+<!-- FOOTER UNIQUE -->
+<footer class="client-footer">
+  <div class="footer-content">
+    <p>© 2026 - Tous droits réservés</p>
+    <div class="authors">
+      <span class="author-name">RAMANANJATOVO Ravaka F.T</span>
+      <span class="separator">&&</span>
+      <span class="author-name">RAKOTOARIMAMY Mitantsoa H.</span>
+    </div>
+  </div>
+</footer>

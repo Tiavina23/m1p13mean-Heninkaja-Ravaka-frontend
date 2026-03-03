@@ -1,61 +1,119 @@
+/* Fond de page harmonisé */
 .login-wrapper {
-  height: 100vh;
+  min-height: 85vh;
   display: flex;
   justify-content: center;
   align-items: center;
-  background: linear-gradient(135deg, #1976d2, #42a5f5);
+  background-color: #fcfcfc;
+  padding: 20px;
 }
 
+/* Carte de connexion style "Product Card" */
 .login-card {
   background: white;
+  width: 100%;
+  max-width: 400px;
   padding: 40px;
-  width: 350px;
-  border-radius: 12px;
-  box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+  border-radius: 20px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+  border: 1px solid #eaeaea;
   text-align: center;
 }
 
-h2 {
+.login-header {
+  margin-bottom: 30px;
+}
+
+.login-header .icon {
+  font-size: 2rem;
+  display: block;
+  margin-bottom: 10px;
+}
+
+.login-header h2 {
+  color: #2f3542;
+  font-size: 1.8rem;
+  font-weight: 800;
+  margin: 0;
+}
+
+.login-header p {
+  color: #7f8c8d;
+  font-size: 0.9rem;
+}
+
+/* Champs de saisie */
+.form-group {
+  text-align: left;
   margin-bottom: 20px;
 }
 
-.form-group {
-  margin-bottom: 15px;
-  text-align: left;
+.form-group label {
+  display: block;
+  font-weight: 600;
+  margin-bottom: 8px;
+  color: #2f3542;
+  font-size: 0.9rem;
 }
 
 input {
   width: 100%;
-  padding: 10px;
-  border-radius: 6px;
-  border: 1px solid #ccc;
+  padding: 12px 15px;
+  border: 2px solid #eee;
+  border-radius: 12px;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+  box-sizing: border-box;
 }
 
-small {
-  color: red;
-  font-size: 12px;
+input:focus {
+  border-color: #27ae60; /* Rappel du vert promo */
+  outline: none;
+  background-color: #f9fffb;
 }
 
-button {
+/* Bouton style "Ajouter au panier" */
+.btn-submit {
   width: 100%;
-  padding: 10px;
-  border: none;
-  border-radius: 6px;
-  background: #1976d2;
+  padding: 14px;
+  background-color: #2f3542;
   color: white;
-  font-weight: bold;
+  border: none;
+  border-radius: 12px;
+  font-weight: 700;
+  font-size: 1rem;
   cursor: pointer;
-}
-
-button:disabled {
-  background: gray;
-}
-
-.error {
+  transition: all 0.3s ease;
   margin-top: 10px;
-  color: red;
 }
 
-.register-link {
-  margin-top: 15px;
+.btn-submit:hover:not(:disabled) {
+  background-color: #27ae60; /* Change au vert au survol */
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(39, 174, 96, 0.3);
 }
+
+.btn-submit:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Erreurs et liens */
+.error-text { color: #e74c3c; font-size: 0.8rem; margin-top: 5px; display: block; }
+.error-msg { background: #fee; color: #e74c3c; padding: 10px; border-radius: 8px; margin-top: 15px; font-size: 0.9rem; }
+
+.register-link { margin-top: 25px; font-size: 0.9rem; color: #7f8c8d; }
+.register-link a { color: #27ae60; font-weight: 700; text-decoration: none; margin-left: 5px; }
+.register-link a:hover { text-decoration: underline; }
+
+/* FOOTER IDENTIQUE */
+.client-footer {
+  padding: 50px 20px;
+  background-color: #1a1d23;
+  color: white;
+  text-align: center;
+  border-top: 5px solid #27ae60;
+}
+
+.author-name { color: #27ae60; font-weight: bold; letter-spacing: 1px; }
+.authors { margin-top: 10px; display: flex; justify-content: center; gap: 10px; }

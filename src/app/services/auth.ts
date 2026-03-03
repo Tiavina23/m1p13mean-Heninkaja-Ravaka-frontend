@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
-import { tap } from 'rxjs';
+import { Injectable, Inject, PLATFORM_ID } from '@angular/core';
+import { isPlatformBrowser } from '@angular/common';
 
 @Injectable({
   providedIn: 'root'
@@ -9,7 +9,10 @@ export class AuthService {
 
   private API_URL = 'http://localhost:5000/api/users';
 
-  constructor(private http: HttpClient) {}
+  constructor(
+    private http: HttpClient,
+    @Inject(PLATFORM_ID) private platformId: Object
+  ) {}
 
   login(data: any) {
     return this.http.post(`${this.API_URL}/login`, data);
@@ -18,19 +21,30 @@ export class AuthService {
   register(data: any) {
     return this.http.post(`${this.API_URL}/register`, data);
   }
+
   getUser() {
-    return JSON.parse(localStorage.getItem('user')!);
+    if (isPlatformBrowser(this.platformId)) {
+      const user = localStorage.getItem('user');
+      return user ? JSON.parse(user) : null;
+    }
+    return null;
   }
+
   saveUser(data: any) {
-    localStorage.setItem('user', JSON.stringify(data));
+    if (isPlatformBrowser(this.platformId)) {
+      localStorage.setItem('user', JSON.stringify(data));
+    }
   }
 
   logout() {
-    localStorage.clear();
+    if (isPlatformBrowser(this.platformId)) {
+      localStorage.clear();
+    }
   }
 
   getToken() {
-    return this.getUser()?.accessToken;
+    const user = this.getUser();
+    return user?.accessToken || null;
   }
 
 }
