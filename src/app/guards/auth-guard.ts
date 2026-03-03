@@ -11,7 +11,7 @@ export const authGuard: CanActivateFn = (route, state) => {
     const token = localStorage.getItem('token');
     const user = JSON.parse(localStorage.getItem('user')!);
 
-    if (token) {
+    if (user["accessToken"]) {
       // Vérifier le rôle si défini dans route
       const expectedRole = route.data['role'];
       if (expectedRole && user.role !== expectedRole) {
