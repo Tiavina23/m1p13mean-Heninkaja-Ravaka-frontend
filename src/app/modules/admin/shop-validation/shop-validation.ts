@@ -1,7 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter } from '@angular/core'; // Ajouté Output et EventEmitter
 import { AdminService } from '../../../services/admin';
 import { CommonModule } from '@angular/common';
-
+import { ChangeDetectorRef } from '@angular/core';
 @Component({
   selector: 'app-shop-validation',
   standalone: true,
@@ -9,13 +9,19 @@ import { CommonModule } from '@angular/common';
   templateUrl: './shop-validation.html',
   styleUrls: ['./shop-validation.css'],
 })
-export class ShopValidation {
+export class ShopValidation implements OnInit {
   pendingShops: any[] = [];
   validatedShops: any[] = [];
   message = '';
   errorMessage = '';
 
-  constructor(private adminService: AdminService) {}
+  // Événement pour prévenir l'AdminDashboard (le parent)
+  @Output() dataChanged = new EventEmitter<void>();
+
+  constructor(
+    private adminService: AdminService,
+    private cdr: ChangeDetectorRef // 2. Injecte
+  ) {}
 
   ngOnInit() {
     this.loadShops();
@@ -26,6 +32,8 @@ export class ShopValidation {
       next: (data: any) => {
         this.pendingShops = data.filter((s: any) => !s.isValidated);
         this.validatedShops = data.filter((s: any) => s.isValidated);
+        this.cdr.detectChanges();
+        this.dataChanged.emit();
       },
       error: (err) => {
         console.error("ERREUR API:", err);
@@ -38,7 +46,7 @@ export class ShopValidation {
     this.adminService.validateShop(id).subscribe({
       next: () => {
         this.message = "Shop validé ✅";
-        this.loadShops();
+        this.loadShops(); // Recharge localement et émet l'événement via loadShops()
       },
       error: (err) => this.errorMessage = "Impossible de valider."
     });
@@ -48,7 +56,7 @@ export class ShopValidation {
     this.adminService.deleteShop(id).subscribe({
       next: () => {
         this.message = "Shop supprimé ❌";
-        this.loadShops();
+        this.loadShops(); // Recharge localement et émet l'événement via loadShops()
       },
       error: (err) => this.errorMessage = "Impossible de supprimer."
     });

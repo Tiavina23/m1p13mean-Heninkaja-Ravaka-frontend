@@ -1,26 +1,47 @@
-import { Component } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { Component, OnInit, Inject, PLATFORM_ID, ChangeDetectorRef } from '@angular/core';
+import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { ShopValidation } from '../shop-validation/shop-validation';
 import { AdminService } from '../../../services/admin';
+
 @Component({
   selector: 'app-admin-dashboard',
   standalone: true,
-  imports: [CommonModule, RouterModule , ShopValidation],
+  imports: [CommonModule, RouterModule, ShopValidation],
   templateUrl: './admin-dashboard.html',
   styleUrl: './admin-dashboard.css'
 })
-export class AdminDashboardComponent  {
+export class AdminDashboardComponent implements OnInit {
 
   isShopValidationOpen = false;
-  shops: any[] = [];       // liste des shops validés
-  pendingShopsCount = 0;   // nombre de shops en attente
+  shops: any[] = [];       // Liste filtrée pour l'affichage (shops validés)
+  pendingShopsCount = 0;   // Compteur pour le bouton notification
 
-  constructor(private adminService: AdminService) {}
+  constructor(
+    private adminService: AdminService,
+    private cdr: ChangeDetectorRef, // Pour forcer la mise à jour sans clic
+    @Inject(PLATFORM_ID) private platformId: Object
+  ) {}
 
   ngOnInit() {
-    this.loadShops();
-    this.loadPendingShopsCount();
+    // On charge les données uniquement côté client pour éviter le vide du SSR
+    if (isPlatformBrowser(this.platformId)) {
+      this.refreshAll();
+    }
+  }
+
+  refreshAll() {
+    this.adminService.getAllShops().subscribe({
+      next: (data: any[]) => {
+       
+        this.shops = data.filter(shop => shop.isValidated === true);
+       
+        this.pendingShopsCount = data.filter(shop => shop.isValidated === false).length;
+       
+        this.cdr.detectChanges();
+      },
+      error: err => console.error("Erreur de récupération des shops:", err)
+    });
   }
 
   openShopValidation() {
@@ -29,23 +50,6 @@ export class AdminDashboardComponent  {
 
   closeShopValidation() {
     this.isShopValidationOpen = false;
-    // recharge les shops et pending après fermeture
-    this.loadShops();
-    this.loadPendingShopsCount();
-  }
-
-  loadShops() {
-    this.adminService.getAllShops().subscribe(
-      (data: any) => this.shops = data,
-      err => console.error(err)
-    );
-  }
-
-  loadPendingShopsCount() {
-    this.adminService.getPendingShops().subscribe(
-      (data: any) => this.pendingShopsCount = data.length,
-      err => console.error(err)
-    );
+    this.refreshAll();
   }
 }
-
