@@ -3,10 +3,12 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { isPlatformBrowser } from '@angular/common';
 import { AuthService } from './../services/auth';
 import { Observable, of } from 'rxjs';
+import { environment } from './../../environments/environment';
 
 @Injectable({ providedIn: 'root' })
 export class PromotionService {
-  private readonly API = 'http://localhost:5000/api/promotions';
+  // private readonly API = 'http://localhost:5000/api/promotions';
+  private readonly API = `${environment.apiUrl}/api/promotions`;
 
   constructor(
     private http: HttpClient,
