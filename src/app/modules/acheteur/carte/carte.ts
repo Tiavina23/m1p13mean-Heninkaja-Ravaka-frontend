@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, Inject, OnInit, PLATFORM_ID } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { CarteService } from '../../../services/carte';
 import { RouterLink } from '@angular/router';
@@ -15,7 +15,11 @@ export class CarteComponent implements OnInit {
   // On met loading à false pour que le HTML soit rendu immédiatement par le serveur
   loading = false; 
 
-  constructor(private carteService: CarteService) {}
+  constructor(
+    private carteService: CarteService,
+    private cdr: ChangeDetectorRef,
+    @Inject(PLATFORM_ID) private platformId: Object
+  ) {}
 
   ngOnInit() {
     this.loadCarte();
@@ -25,6 +29,7 @@ export class CarteComponent implements OnInit {
     this.carteService.getCarte().subscribe({
       next: (data) => {
         this.produits = data;
+        this.cdr.detectChanges();
       },
       error: (err) => console.error("Erreur API", err)
     });
