@@ -1,12 +1,14 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { environment } from './../../environments/environment';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AdminService {
 
-  private API = 'http://localhost:5000/api/users';
+  // private API = 'http://localhost:5000/api/users';
+  private API = `${environment.apiUrl}/api/users`;
 
   constructor(private http: HttpClient) {}
 

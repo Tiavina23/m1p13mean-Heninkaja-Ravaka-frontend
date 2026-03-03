@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { AuthService } from './../services/auth';
 import { Observable } from 'rxjs';
+import { environment } from './../../environments/environment';
 
 export interface Produit {
   _id: string;
@@ -15,7 +16,8 @@ export interface Produit {
 
 export class ProduitService {
 
-  API_URL = 'http://localhost:5000/api/produits';
+  // API_URL = 'http://localhost:5000/api/produits';
+  API_URL = `${environment.apiUrl}/api/produits`;
 
   constructor(private http: HttpClient, private authService: AuthService) {}
 

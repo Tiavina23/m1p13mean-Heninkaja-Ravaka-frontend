@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { AuthService } from './auth';
 import { Observable } from 'rxjs';
+import { environment } from './../../environments/environment';
 
 export interface Fete {
   _id?: string;
@@ -11,7 +12,8 @@ export interface Fete {
 
 @Injectable({ providedIn: 'root' })
 export class FeteService {
-  API = 'http://localhost:5000/api/fetes';
+  // API = 'http://localhost:5000/api/fetes';
+  API = `${environment.apiUrl}/api/fetes`;
 
   constructor(private http: HttpClient, private auth: AuthService) {}
 
